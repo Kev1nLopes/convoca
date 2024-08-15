@@ -2,13 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res } from '@ne
 import { TimesService } from './times.service';
 import { CreateTimeDto } from './dto/create-time.dto';
 import { UpdateTimeDto } from './dto/update-time.dto';
-import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JWTUtil } from 'utils/jwt-util';
 import { AtletaTimeService } from 'src/atleta_time/atleta_time.service';
 import { CreateAtletaTimeDto } from 'src/atleta_time/dto/create-atleta_time.dto';
 
-@Controller('times')
-@ApiTags('Times')
+@Controller('time')
+@ApiTags('Time')
 export class TimesController {
   constructor(
     private readonly timesService: TimesService,
@@ -16,6 +16,7 @@ export class TimesController {
     ) {}
 
   @Post()
+  @ApiBody({type: CreateTimeDto})
   async create(@Body() createTimeDto: CreateTimeDto, @Res() res, @Req() req) {
     const token = JWTUtil.getDadosToken(req);
     const response = await this.timesService.create(createTimeDto, token);
@@ -34,8 +35,8 @@ export class TimesController {
     const response = await this.atletaTimeService.buscarAtletas(+id);
     res.status(response.status).json(response.message)
   }
-
-  @Get('todos')
+  
+  @Get('/todos')
   async buscarTimes(@Res() res){
     const response = await this.timesService.buscarTimes();
     res.status(response.status).json(response.message)

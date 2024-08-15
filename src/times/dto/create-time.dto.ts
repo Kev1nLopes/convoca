@@ -4,23 +4,20 @@ import { IsNotEmpty } from "class-validator";
 export class CreateTimeDto {
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsNotEmpty({message: 'Informe o nome'})
   nome: String;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsNotEmpty({message: 'Informe o esporte'})
   esporte_id: Number;
 
   @ApiProperty()
-  @IsNotEmpty()
   sigla: String;
 
   @ApiProperty()
-  @IsNotEmpty()
   logotipo_url: String;
 
   @ApiProperty()
-  @IsNotEmpty()
   instituicao: Number;
 
   @ApiProperty()
