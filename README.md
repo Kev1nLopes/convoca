@@ -10,7 +10,7 @@
 > Cargos - OBS: Não criei tabela, dexei 3 Strings, Admin, Treinador(Trocar para Tecnico), Atleta
 > Cadastro Atleta
 > Editar perfil atleta
-- Um atleta pode não possuir um time 
+- Um atleta pode não possuir um time
 
 
 
