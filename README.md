@@ -1,73 +1,71 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+<h3> Bem vindo ao <b>CONVOCA</b></h3>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Tarefas feitas - Marcar com @ no final todass que estiverem testadas e aprovadas
+> Autenticação 
+> Editar Perfil
+> Inserir/Atualizar Dados pessoais(CPF, E-mai, Senha)
+> Cadastro Time
+- O usuario que cadastro o time automaticamente fica com o cargo de Admin
+> Cargos - OBS: Não criei tabela, dexei 3 Strings, Admin, Treinador(Trocar para Tecnico), Atleta
+> Cadastro Atleta
+> Editar perfil atleta
+- Um atleta pode não possuir um time 
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+Como é organizado esse arquivo ?
+#    TITULO
+##   SUBTITULO/TÓPICO
+###  ANOTAÇÃO
+> Tarefas
+>> Subtarefas
+- Anotações de tarefas / Observações
+?? Dúvida // Debater em reuniões
 
-```bash
-$ npm install
-```
+# CONVOCA
 
-## Running the app
+## Usuario
+>> Inserir endereço
+>>- O USUÁRIO DEVE TER CPF CADASTRADO PARA REALIZAR PAGAMENTOS NA PLATAFORMA
 
-```bash
-# development
-$ npm run start
 
-# watch mode
-$ npm run start:dev
+## Time
+- Cada time tem um limite de 12 atletas
+- Cada time pode possui apenas 1 diretor
+- Cada time pode possuir apenas 1 tecnico
+- ?? O time deve ser de apenas um esporte 
+- ?? O time pertence a uma instituição que possui varios times/categorias ?
+- ?? Cada time possui apenas uma sigla unica? por exemplo cru, gre, sao, pal
 
-# production mode
-$ npm run start:prod
-```
 
-## Test
 
-```bash
-# unit tests
-$ npm run test
+## Atleta
+> Desativar perfil
+- Um atleta pode estar em varios times, vai agregar mais dinheiro pra gente com as missões
 
-# e2e tests
-$ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
-```
 
-## Support
+## Campeonato
+> Cadastro
+- Limite de ingressos(time)
+- ?? Pensar
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+## Ingresso_campeonato_time
+> Cadastro
+- ?? Pensar
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Confrontos
 
-## License
+## Ingresso_confrontos
 
-Nest is [MIT licensed](LICENSE).
+## Partidas amistosas
+
+
+## Missões
+> Cadastrar
+- Missões tem um prazo (Semanal, Mensal, Anual)
+- Missões bonus com filtro de acordo com a posição do atleta(Marcar um gol e postar na rede social marcando o convoca)
+
+
