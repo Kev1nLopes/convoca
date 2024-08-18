@@ -32,6 +32,8 @@ export class PartidasService {
       let Partidas = this.partidaRepository.find({
       })
 
+      
+
     }catch(error){
       console.log(" ~ PartidasService ~ create ~ error:", error)
       throw new BadRequestException('')
