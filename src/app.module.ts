@@ -8,6 +8,8 @@ import { Usuario } from './usuarios/entities/usuario.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AtletaTime } from './atleta_time/entities/atleta_time.entity';
 import { Time } from './times/entities/time.entity';
+import { PartidasModule } from './partidas/partidas.module';
+import { DesafiosModule } from './desafios/desafios.module';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { Time } from './times/entities/time.entity';
       synchronize: true,
       autoLoadEntities: true,
     }), 
-    UsuariosModule, TimesModule
+    UsuariosModule, TimesModule, PartidasModule, DesafiosModule
 
   ],
   controllers: [AppController],
