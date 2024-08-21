@@ -10,6 +10,8 @@ import { AtletaTime } from './atleta_time/entities/atleta_time.entity';
 import { Time } from './times/entities/time.entity';
 import { PartidasModule } from './partidas/partidas.module';
 import { DesafiosModule } from './desafios/desafios.module';
+import { TimesService } from './times/times.service';
+import { EsporteModule } from './esportes/espote.module';
 
 @Module({
   imports: [
@@ -24,8 +26,7 @@ import { DesafiosModule } from './desafios/desafios.module';
       synchronize: true,
       autoLoadEntities: true,
     }), 
-    UsuariosModule, TimesModule, PartidasModule, DesafiosModule
-
+    UsuariosModule, TimesModule, PartidasModule, DesafiosModule, EsporteModule
   ],
   controllers: [AppController],
   providers: [AppService],

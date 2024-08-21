@@ -40,7 +40,7 @@ export class Usuario {
   ativo: boolean;
 
   /// Usuario pode ser dono de um time ou não ser
-  @OneToOne(() => Time, (time) => time.Usuario, {nullable: true})
+  @OneToMany(() => Time, (time) => time.Usuario, {nullable: true})
   timeDono: Time;
 
   // Usuário pode ser atleta de diversos times

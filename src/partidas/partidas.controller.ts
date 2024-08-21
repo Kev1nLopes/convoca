@@ -2,14 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PartidasService } from './partidas.service';
 import { CreatePartidaDto } from './dto/create-partida.dto';
 import { UpdatePartidaDto } from './dto/update-partida.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Partidas')
 @Controller('partidas')
 export class PartidasController {
   constructor(private readonly partidasService: PartidasService) {}
 
+  
+  
   @Post()
+  @ApiBearerAuth()
   create(@Body() createPartidaDto: CreatePartidaDto) {
     
     return this.partidasService.create(createPartidaDto);
@@ -26,11 +29,13 @@ export class PartidasController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updatePartidaDto: UpdatePartidaDto) {
     return this.partidasService.update(+id, updatePartidaDto);
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.partidasService.remove(+id);
   }

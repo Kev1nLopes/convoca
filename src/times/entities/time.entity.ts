@@ -13,24 +13,18 @@ export class Time {
   @Column({nullable: false})
   nome: String;
 
-  // Fazer relacionamento 1:1 com esporte
-  @Column({nullable: false})
-  esporte_id: Number;
-
-  
-
-  @Column()
+  @Column({nullable: true})
   sigla: String;
 
-  @Column()
+  @Column({nullable: true})
   logotipo_url: String;
 
   @Column({ nullable: true})
   instituicao: Number;
 
   
-  @Column()
-  dt_fundacao: String;
+  @Column({type: 'date'})	
+  dt_fundacao: Date;
   
   @Column({default: true})
   ativo: Boolean
@@ -38,15 +32,14 @@ export class Time {
   @Column({ default: () => "CURRENT_TIMESTAMP + INTERVAL '3 hours'", type: 'timestamp'})
   dt_criacao: Date;
 
-  @Column({ nullable: false })  
-  fundador_id: Number;
 
   //Referencia ao usuario que fundou o time, quando haver cargos esse fundador vai receber o cardo dono/admin
-  @OneToOne(() => Usuario, (usuario) => usuario.timeDono)
+  @ManyToOne(() => Usuario, (usuario) => usuario.timeDono)
   @JoinColumn({name: "fundador_id"})
   Usuario: Usuario
 
   @ManyToOne(() => Esporte, (esporte) => esporte.time)
+  @JoinColumn({name: "esporte_id"})
   esporte: Esporte
 
   @OneToMany(() => AtletaTime, (atletaTime) => atletaTime.time)

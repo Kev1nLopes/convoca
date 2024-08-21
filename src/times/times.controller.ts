@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res } from '@ne
 import { TimesService } from './times.service';
 import { CreateTimeDto } from './dto/create-time.dto';
 import { UpdateTimeDto } from './dto/update-time.dto';
-import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JWTUtil } from 'utils/jwt-util';
 import { AtletaTimeService } from 'src/atleta_time/atleta_time.service';
 import { CreateAtletaTimeDto } from 'src/atleta_time/dto/create-atleta_time.dto';
@@ -12,18 +12,21 @@ import { CreateAtletaTimeDto } from 'src/atleta_time/dto/create-atleta_time.dto'
 export class TimesController {
   constructor(
     private readonly timesService: TimesService,
-    private readonly atletaTimeService: AtletaTimeService
+    private readonly atletaTimeService: AtletaTimeService,
     ) {}
 
+  
   @Post()
+  @ApiBearerAuth()
   @ApiBody({type: CreateTimeDto})
   async create(@Body() createTimeDto: CreateTimeDto, @Res() res, @Req() req) {
     const token = JWTUtil.getDadosToken(req);
     const response = await this.timesService.create(createTimeDto, token);
     res.status(response.status).json(response.message)
   }
-
+  
   @Post('cadastrar-atleta')
+  @ApiBearerAuth()
   async cadastrarAtleta(cadastrarAtleta: CreateAtletaTimeDto, @Res() res, @Req() req){
     const token = JWTUtil.getDadosToken(req);
     const response = await this.atletaTimeService.cadastrarAtleta(cadastrarAtleta, token, false);
@@ -67,8 +70,10 @@ export class TimesController {
     const response = await this.timesService.findOne(+id);
     res.status(response.status).json(response.message)
   }
-
+  
+  
   @Patch(':id')
+  @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateTimeDto: UpdateTimeDto, @Res() res, @Req() req) {
     const token = JWTUtil.getDadosToken(req)
     const response = await this.timesService.update(+id, updateTimeDto, token);
@@ -76,6 +81,7 @@ export class TimesController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   async remove(@Param('id') id: string, @Res() res, @Req() req) {
     const token = JWTUtil.getDadosToken(req)
     const response = await this.timesService.remove(+id, token);

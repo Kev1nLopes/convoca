@@ -19,7 +19,7 @@ export class CreateUsuarioDto {
   @IsEmail({}, {message: 'Informe um e-mail valido'})
   email: String;
 
-  @ApiProperty()
+  @ApiProperty({example: '2002-01-18'})
   @IsNotEmpty({message: 'Informe a data de nascimento'})
   data_nasc: Date;
 }

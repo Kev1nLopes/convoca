@@ -42,7 +42,8 @@ export class JWTUtil {
   }
 
   static getDadosToken(req: Request): Token{
-    let token = req.headers['Authorization'];
+    if(!req.headers['authorization']) throw new BadRequestException('Token inválido');
+    let token = req.headers['authorization'].replace('Bearer ', '');
     const decodedToken = this.verifyToken(token);
     return decodedToken as Token;
   }

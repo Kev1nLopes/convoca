@@ -4,25 +4,24 @@ import { UpdateAtletaTimeDto } from './dto/update-atleta_time.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AtletaTime } from './entities/atleta_time.entity';
+import { Token } from 'types/Token';
+import { TimesService } from 'src/times/times.service';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { Time } from 'src/times/entities/time.entity';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
-import { Token } from 'types/Token';
 
 @Injectable()
 export class AtletaTimeService {
 
 
-  /**
-   *
-   */
   constructor(
     @InjectRepository(AtletaTime)
     private readonly atletaTimeRepository: Repository<AtletaTime>,
-    @InjectRepository(Usuario)
-    private readonly usuarioRepository: Repository<Usuario>,
+    private readonly usuarioService: UsuariosService,
     @InjectRepository(Time)
     private readonly timeRepository: Repository<Time>,
-  ) {
+
+    ) {
     
     
   }
@@ -39,20 +38,16 @@ export class AtletaTimeService {
       
       await this.verificarPermissaoAdmin(time.id, token.id)
 
-      let Atleta = await this.usuarioRepository.findOne({
-        where: {
-          id:  createAtletaTimeDto.usuario_id
-        }
-      })
-
-      if(!Atleta) throw new NotFoundException('Nenhum atleta encontrado');
-
-
+      let Atleta = await this.usuarioService.getById(createAtletaTimeDto.usuario_id);
 
       let jaFazParteDoTime = await this.atletaTimeRepository.findOne({
         where: {
-          time_id: time.id,
-          usuario_id: Atleta.id
+          time: {
+            id: time.id
+          },
+          usuario: {
+            id: Atleta.id
+          }
         }
       })
 
@@ -74,12 +69,34 @@ export class AtletaTimeService {
     }
   }
 
+  async cadastrarAtletaAdmin(time: Time, Atleta: Usuario) {
+    try{
+
+      let atletaTime = this.atletaTimeRepository.create()
+
+      atletaTime.cargo = 'Admin'
+      atletaTime.time = time;
+      atletaTime.usuario = Atleta;
+      
+      let novoAtleta = await this.atletaTimeRepository.save(atletaTime);
+
+      return novoAtleta
+
+    }catch(error){
+      console.log(" ~ AtletaTimeService ~ cadastrarAtletaAdmin ~ error:", error)
+      throw new BadRequestException('Não possível cadastrar o atleta como admin')
+      
+    }
+  }
+
   async buscarAtletas(timeId: Number) {
     try{
 
       let Atletas = await this.atletaTimeRepository.find({
         where: {
-          time_id: timeId
+          time: {
+            id: timeId
+          }
         },
         relations: [
           'usuario'
@@ -99,8 +116,12 @@ export class AtletaTimeService {
 
       let atleta = await this.atletaTimeRepository.findOne({
         where:{
-          time_id: updateAtletaTimeDto.time_id,
-          usuario_id: updateAtletaTimeDto.usuario_id
+          time: {
+              id: updateAtletaTimeDto.time_id  
+          },
+          usuario: {
+            id: updateAtletaTimeDto.usuario_id 
+          }
         }
       })
 
@@ -130,11 +151,15 @@ export class AtletaTimeService {
    * @param user_id 
    * @returns 
    */
-  async verificarPermissaoAdmin(time_id, user_id){
+  async verificarPermissaoAdmin(time_id: Number, user_id: Number){
     let usuario = await this.atletaTimeRepository.findOne({
       where: {
-        time_id: time_id,
-        usuario_id: user_id
+        time: {
+          id: time_id
+        },
+        usuario: {
+          id: user_id
+        }
       }
     })
     // Se o usuário não pertencer ao time ou não ter cargo Admin
@@ -148,7 +173,9 @@ export class AtletaTimeService {
     try{
       let Atleta = await this.atletaTimeRepository.find({
         where: {
-          usuario_id: usuario_id
+          usuario: {
+            id: usuario_id
+          }
         },
         relations: [
           'time'

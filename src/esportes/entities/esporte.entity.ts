@@ -12,7 +12,7 @@ export class Esporte {
   nome: String;
 
   @Column()
-  limite_atletas: String;
+  limite_atletas_inicial: Number;
 
   @OneToMany(() => Time, (time) => time.esporte)
   time: Time

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, Req } fr
 import { DesafiosService } from './desafios.service';
 import { CreateDesafioDto } from './dto/create-desafio.dto';
 import { UpdateDesafioDto } from './dto/update-desafio.dto';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { buscarPendentesQuery } from './dto/buscar-pendentes-query';
 import { StatusDesafio } from './entities/desafio.entity';
 import { Token } from 'types/Token';
@@ -14,6 +14,7 @@ export class DesafiosController {
   constructor(private readonly desafiosService: DesafiosService) {}
 
   @Post()
+  @ApiBearerAuth()
   async cadastrarDesafio(@Body() createDesafioDto: CreateDesafioDto, @Req() req, @Res() res) {
     const token = JWTUtil.getDadosToken(req)
     const response = await this.desafiosService.cadastrarDesafio(createDesafioDto, token);
@@ -40,6 +41,7 @@ export class DesafiosController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateDesafioDto: UpdateDesafioDto, @Req() req, @Res() res) {
     const token = JWTUtil.getDadosToken(req)
     const response = await this.desafiosService.update(+id, updateDesafioDto, token);

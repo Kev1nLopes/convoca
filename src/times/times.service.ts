@@ -7,6 +7,9 @@ import { Repository } from 'typeorm';
 import { Token } from 'types/Token';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import { AtletaTimeService } from 'src/atleta_time/atleta_time.service';
+import { create } from 'domain';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { Esporte } from 'src/esportes/entities/esporte.entity';
 
 @Injectable()
 export class TimesService {
@@ -17,30 +20,34 @@ export class TimesService {
   constructor(
     @InjectRepository(Time)
     private readonly timeRepository: Repository<Time>,
-    private atletaTimeService: AtletaTimeService
+    @InjectRepository(Esporte)
+    private readonly esporteRepository: Repository<Esporte>,
+    private atletaTimeService: AtletaTimeService,
+    private readonly usuarioService: UsuariosService
     ) {
     
   }
   async create(createTimeDto: CreateTimeDto, token: Token) {
     try{
+      let Usuario = await this.usuarioService.getById(token.id);
+      let esporte = await this.esporteRepository.findOne({where : { id: createTimeDto.esporte_id}})
       let time = this.timeRepository.create()
       
-      for (const key of Object.keys(createTimeDto)) {
-        if(Object.keys(time).includes(key)){
-          time[key] = createTimeDto[key]
-        }
-      }
+      time.dt_fundacao = createTimeDto.dt_fundacao;
+      time.nome = createTimeDto.nome
+      time.sigla = createTimeDto.sigla
+      time.Usuario = Usuario;
+      time.esporte = esporte;
 
-      time.fundador_id = token.id
-
-      this.timeRepository.save(time);
+      let novoTime = await this.timeRepository.save(time);
 
 
-      await this.atletaTimeService.cadastrarAtleta({time_id: time.id, usuario_id: token.id}, token, true)
+      await this.atletaTimeService.cadastrarAtletaAdmin(novoTime, Usuario)
       
       return { status: 200, message: 'Time criado com sucesso'}
 
     }catch(error){
+      console.log("🚀 ~ TimesService ~ create ~ error:", error)
       throw new BadRequestException('Não foi possível criar um time')
     }
   }
@@ -59,14 +66,7 @@ export class TimesService {
 
   async findOne(id: number) {
     try{
-      const Time = await this.timeRepository.findOne({
-        where: {
-          id: id
-        }
-      })
-
-      if(!Time) throw new NotFoundException('Não foi possível consultar o time')
-
+      let Time = await this.findTime(id);
 
       return { status: 200, message: Time}
 
@@ -79,13 +79,7 @@ export class TimesService {
   async update(id: number, updateTimeDto: UpdateTimeDto, token: Token) {
     try{
 
-      const Time = await this.timeRepository.findOne({
-        where: {
-          id: id
-        }
-      })
-    
-      if(!Time) throw new NotFoundException('Nenhum time encontrado');
+      let Time = await this.findTime(id);
 
       await this.atletaTimeService.verificarPermissaoAdmin(Time.id, token.id)
 
@@ -131,6 +125,25 @@ export class TimesService {
     }catch(error){
       console.log(" ~ TimesService ~ remove ~ error:", error)
       throw new BadRequestException('Não foi possível deletar o time')
+    }
+  }
+
+
+
+  async findTime(id: Number){
+    try{
+      const Time = await this.timeRepository.findOne({
+        where: {
+          id: id
+        }
+      })
+    
+      if(!Time) throw new NotFoundException('Nenhum time encontrado');
+
+      return Time
+    }catch(error){
+      console.log(" ~ TimesService ~ findTime ~ error:", error)
+      throw new BadRequestException('Não foi possível consultar o time')
     }
   }
 }

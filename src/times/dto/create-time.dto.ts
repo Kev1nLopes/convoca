@@ -20,7 +20,7 @@ export class CreateTimeDto {
   @ApiProperty()
   instituicao: Number;
 
-  @ApiProperty()
+  @ApiProperty({example: '2002-01-18'})
   @IsNotEmpty()
-  dt_fundacao: String;
+  dt_fundacao: Date;
 }

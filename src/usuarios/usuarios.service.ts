@@ -117,6 +117,26 @@ export class UsuariosService {
     }
   }
 
+  async getById(id: Number){
+    try{
+
+      const Usuario = await this.usuarioRepository.findOne({
+        where: { 
+          id: id,
+        }
+      })
+
+      if(!Usuario) throw new NotFoundException('Nenhum usuário encontrado')
+
+      return Usuario
+
+    }catch(error){
+      console.log(" ~ UsuariosService ~ getById ~ error:", error)
+      throw new BadRequestException('Não foi possível consultar o usuário')
+    }
+  }
+
+
   async remove(token: Token) {
     try{
       const Usuario = await this.usuarioRepository.findOne({
