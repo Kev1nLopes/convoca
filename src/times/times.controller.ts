@@ -27,7 +27,8 @@ export class TimesController {
   
   @Post('cadastrar-atleta')
   @ApiBearerAuth()
-  async cadastrarAtleta(cadastrarAtleta: CreateAtletaTimeDto, @Res() res, @Req() req){
+  @ApiBody({type: CreateAtletaTimeDto})
+  async cadastrarAtleta(@Body() cadastrarAtleta: CreateAtletaTimeDto, @Res() res, @Req() req){
     const token = JWTUtil.getDadosToken(req);
     const response = await this.atletaTimeService.cadastrarAtleta(cadastrarAtleta, token, false);
     res.status(response.status).json(response.message)
@@ -45,25 +46,25 @@ export class TimesController {
     res.status(response.status).json(response.message)
   }
 
-  @Get(':id?')
-  @ApiParam({
-    name: 'id',
-    type: Number,
-    description: 'Id do atleta',
-    required: false
-  })
-  async getAtletaTimes(@Param('id') id: Number, @Res() res, @Req() req){
-    let paramId = id
-    if(req.headers.Authorization){
-      const token = JWTUtil.getDadosToken(req)
-      if(!paramId) {
-        paramId = token.id
-      }
-    }
+  // @Get(':id?')
+  // @ApiParam({
+  //   name: 'id',
+  //   type: Number,
+  //   description: 'Id do atleta',
+  //   required: false
+  // })
+  // async getAtletaTimes(@Param('id') id: Number, @Res() res, @Req() req){
+  //   let paramId = id
+  //   if(req.headers.Authorization){
+  //     const token = JWTUtil.getDadosToken(req)
+  //     if(!paramId) {
+  //       paramId = token.id
+  //     }
+  //   }
 
-    const response = await this.atletaTimeService.getAtletaTimes(paramId)
-    res.status(response.status).json(response.message)
-  }
+  //   const response = await this.atletaTimeService.getAtletaTimes(paramId)
+  //   res.status(response.status).json(response.message)
+  // }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res) {

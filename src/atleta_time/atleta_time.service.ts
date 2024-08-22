@@ -27,6 +27,7 @@ export class AtletaTimeService {
   }
   async cadastrarAtleta(createAtletaTimeDto: CreateAtletaTimeDto, token: Token, isAdmin: boolean){
     try{
+      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ createAtletaTimeDto:", createAtletaTimeDto)
 
       let time = await this.timeRepository.findOne({
         where: {
@@ -67,6 +68,11 @@ export class AtletaTimeService {
       console.log(" ~ AtletaTimeService ~ cadastrarAtleta ~ error:", error)
       throw new BadRequestException('Não foi possível adicionar o usuário')
     }
+      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token.id:", token.id)
+      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token.id:", token.id)
+      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token.id:", token.id)
+      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token:", token)
+      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token:", token)
   }
 
   async cadastrarAtletaAdmin(time: Time, Atleta: Usuario) {
@@ -162,6 +168,7 @@ export class AtletaTimeService {
         }
       }
     })
+    console.log("🚀 ~ AtletaTimeService ~ verificarPermissaoAdmin ~ usuario:", usuario)
     // Se o usuário não pertencer ao time ou não ter cargo Admin
     if(!usuario || usuario.cargo != 'Admin') throw new UnauthorizedException('Você não pode realizar está ação');
     
