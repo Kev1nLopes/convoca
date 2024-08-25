@@ -25,15 +25,6 @@ export class TimesController {
     res.status(response.status).json(response.message)
   }
   
-  @Post('cadastrar-atleta')
-  @ApiBearerAuth()
-  @ApiBody({type: CreateAtletaTimeDto})
-  async cadastrarAtleta(@Body() cadastrarAtleta: CreateAtletaTimeDto, @Res() res, @Req() req){
-    const token = JWTUtil.getDadosToken(req);
-    const response = await this.atletaTimeService.cadastrarAtleta(cadastrarAtleta, token, false);
-    res.status(response.status).json(response.message)
-  }
-
   @Get('atletas/:id')
   async buscarAtletas(@Param("id") id: string, @Res() res){
     const response = await this.atletaTimeService.buscarAtletas(+id);

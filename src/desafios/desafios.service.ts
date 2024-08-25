@@ -24,7 +24,7 @@ export class DesafiosService {
   
   async cadastrarDesafio(createDesafioDto: CreateDesafioDto, token) {
     try{
-      const TimeDesafiante = this.timeRepository.findOne({
+      const TimeDesafiante = await this.timeRepository.findOne({
         where: {
           id: createDesafioDto.id_time_desafiante
         }
@@ -32,7 +32,7 @@ export class DesafiosService {
 
       if(!TimeDesafiante) throw new NotFoundException('Time Desafiante não encontrado')
 
-      const TimeDesafiado = this.timeRepository.findOne({
+      const TimeDesafiado = await this.timeRepository.findOne({
         where: {
           id: createDesafioDto.id_time_desafiado
         }
@@ -46,13 +46,12 @@ export class DesafiosService {
           'datahora_desafio',
           'nome_campo',
           'status',
-          'id_time_desafiado',
           'time_desafiante',
           'time_desafiado'
         ],
         where: [
-          {id_time_desafiado: createDesafioDto.id_time_desafiado, id_time_desafiante: createDesafioDto.id_time_desafiante, status: StatusDesafio.Pendente},
-          {id_time_desafiado: createDesafioDto.id_time_desafiante, id_time_desafiante: createDesafioDto.id_time_desafiado, status: StatusDesafio.Pendente},
+          {time_desafiante: { id: createDesafioDto.id_time_desafiado}, time_desafiado: {id: createDesafioDto.id_time_desafiante }, status: StatusDesafio.Pendente},
+          {time_desafiante: { id: createDesafioDto.id_time_desafiante}, time_desafiado: {id: createDesafioDto.id_time_desafiado }, status: StatusDesafio.Pendente},
         ],
         relations: [
           'time_desafiante',
@@ -64,9 +63,9 @@ export class DesafiosService {
         return { status: 200, message: { message: 'As duas equipes ja possuem um desafio pendente', desafio: desafio}}
       }
 
-      const NovoDesafio = this.desafioRepository.create()
-      NovoDesafio.id_time_desafiado  = createDesafioDto.id_time_desafiado  
-      NovoDesafio.id_time_desafiante = createDesafioDto.id_time_desafiante 
+      const NovoDesafio = await this.desafioRepository.create()
+      NovoDesafio.time_desafiado     = TimeDesafiado
+      NovoDesafio.time_desafiante    = TimeDesafiante
       NovoDesafio.nome_campo         = createDesafioDto.nome_campo
       NovoDesafio.status             = StatusDesafio.Pendente
       NovoDesafio.usuario_id         = token.id
@@ -111,8 +110,8 @@ export class DesafiosService {
 
       const Desafios = await this.desafioRepository.find({
         where: [
-          {id_time_desafiado: id_time, ...whereStatus, ...whereData},
-          {id_time_desafiante: id_time, ...whereStatus, ...whereData},
+          {time_desafiado: {id: id_time}, ...whereStatus, ...whereData},
+          {time_desafiante: {id: id_time} , ...whereStatus, ...whereData},
         ]
       })
 
@@ -151,14 +150,18 @@ export class DesafiosService {
       let desafio = await this.desafioRepository.findOne({
         where: {
           id: id,
-        }
+        },
+        relations: [
+          'time_desafiado',
+          'time_desafiante'
+        ]
       })
 
       if(!desafio) throw new NotFoundException('Nenhum desafio encontrado')
 
       let TimeDesafiado = await this.timeRepository.findOne({
         where: {
-          id: desafio.id_time_desafiado
+          id: desafio.time_desafiado.id
         },
         relations: [
           'atletas'	
@@ -167,7 +170,7 @@ export class DesafiosService {
 
       let TimeDesafiante = await this.timeRepository.findOne({
         where: {
-          id: desafio.id_time_desafiante
+          id: desafio.time_desafiante.id
         },
         relations: [
           'atletas'	
