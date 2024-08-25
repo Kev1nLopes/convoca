@@ -1,4 +1,5 @@
 import { AtletaTime } from "src/atleta_time/entities/atleta_time.entity";
+import { Convite } from "src/convites/entities/convite.entity";
 import { Desafio } from "src/desafios/entities/desafio.entity";
 import { Esporte } from "src/esportes/entities/esporte.entity";
 import { Usuario } from "src/usuarios/entities/usuario.entity";
@@ -22,7 +23,9 @@ export class Time {
   @Column({ nullable: true})
   instituicao: Number;
 
-  
+  @Column({nullable: true, default: false})
+  publico: Boolean
+
   @Column({type: 'date'})	
   dt_fundacao: Date;
   
@@ -32,6 +35,8 @@ export class Time {
   @Column({ default: () => "CURRENT_TIMESTAMP + INTERVAL '3 hours'", type: 'timestamp'})
   dt_criacao: Date;
 
+  @OneToMany(() => Convite, (convite) => convite.time)
+  convites: Convite[]
 
   //Referencia ao usuario que fundou o time, quando haver cargos esse fundador vai receber o cardo dono/admin
   @ManyToOne(() => Usuario, (usuario) => usuario.timeDono)

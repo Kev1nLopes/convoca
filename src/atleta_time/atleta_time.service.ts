@@ -25,54 +25,32 @@ export class AtletaTimeService {
     
     
   }
-  async cadastrarAtleta(createAtletaTimeDto: CreateAtletaTimeDto, token: Token, isAdmin: boolean){
+  async cadastrarAtleta(createAtletaTimeDto: CreateAtletaTimeDto){
     try{
-      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ createAtletaTimeDto:", createAtletaTimeDto)
-
       let time = await this.timeRepository.findOne({
         where: {
           id: createAtletaTimeDto.time_id
-        },
-      }) 
-
-      if(!time) throw new NotFoundException('Nenhum time encontrado');
-      
-      await this.verificarPermissaoAdmin(time.id, token.id)
-
-      let Atleta = await this.usuarioService.getById(createAtletaTimeDto.usuario_id);
-
-      let jaFazParteDoTime = await this.atletaTimeRepository.findOne({
-        where: {
-          time: {
-            id: time.id
-          },
-          usuario: {
-            id: Atleta.id
-          }
         }
       })
 
-      if(jaFazParteDoTime) throw new BadRequestException('Esse atleta ja faz parte do time');
+      // Nunca vai cair aqui pois ja tem uma verificação feita na criação de convite, mas por precaução
+      if(!time) throw new BadRequestException('Nenhum time encontrado')
 
+      let Atleta = await this.usuarioService.getById(createAtletaTimeDto.usuario_id);
       let atletaTime = this.atletaTimeRepository.create()
 
-      atletaTime.cargo = isAdmin ? 'Admin' : 'Atleta';
+      atletaTime.cargo = 'Atleta';
       atletaTime.time = time;
       atletaTime.usuario = Atleta;
       
       await this.atletaTimeRepository.save(atletaTime);
 
-      return { status: 200, message: 'Atleta adicionado com sucesso'}
+      return { time: time, atleta: Atleta }
 
     }catch(error){
       console.log(" ~ AtletaTimeService ~ cadastrarAtleta ~ error:", error)
       throw new BadRequestException('Não foi possível adicionar o usuário')
     }
-      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token.id:", token.id)
-      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token.id:", token.id)
-      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token.id:", token.id)
-      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token:", token)
-      console.log("🚀 ~ AtletaTimeService ~ cadastrarAtleta ~ token:", token)
   }
 
   async cadastrarAtletaAdmin(time: Time, Atleta: Usuario) {
@@ -158,6 +136,16 @@ export class AtletaTimeService {
    * @returns 
    */
   async verificarPermissaoAdmin(time_id: Number, user_id: Number){
+
+    
+    let time = await this.timeRepository.findOne({
+      where: {
+        id: time_id
+      }
+    }) 
+
+    if(!time) throw new BadRequestException('Nenhum time encontrado');
+
     let usuario = await this.atletaTimeRepository.findOne({
       where: {
         time: {
@@ -168,10 +156,26 @@ export class AtletaTimeService {
         }
       }
     })
-    console.log("🚀 ~ AtletaTimeService ~ verificarPermissaoAdmin ~ usuario:", usuario)
     // Se o usuário não pertencer ao time ou não ter cargo Admin
     if(!usuario || usuario.cargo != 'Admin') throw new UnauthorizedException('Você não pode realizar está ação');
     
+    return usuario;
+  }
+
+  async verificarParticipacaoTime(usuario_id: number, time_id: number){
+    let jaFazParteDoTime = await this.atletaTimeRepository.findOne({
+      where: {
+        time: {
+          id: time_id
+        },
+        usuario: {
+          id: usuario_id
+        },
+      }
+    })
+
+    if(jaFazParteDoTime) throw new BadRequestException('Usuário ja faz parte do time');
+
     return
   }
 

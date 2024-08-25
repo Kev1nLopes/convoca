@@ -1,4 +1,5 @@
 import { AtletaTime } from "src/atleta_time/entities/atleta_time.entity";
+import { Convite } from "src/convites/entities/convite.entity";
 import { Time } from "src/times/entities/time.entity";
 import { AfterInsert, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -39,6 +40,9 @@ export class Usuario {
   @Column({default: true, type: 'boolean'})
   ativo: boolean;
 
+  @OneToMany(() => Convite, (convite) => convite.usuario)
+  convites: Convite[];
+  
   /// Usuario pode ser dono de um time ou não ser
   @OneToMany(() => Time, (time) => time.Usuario, {nullable: true})
   timeDono: Time;

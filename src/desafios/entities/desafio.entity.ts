@@ -13,7 +13,7 @@ export enum StatusDesafio  {
 export class Desafio {
 
   @PrimaryGeneratedColumn()
-  id: Number;
+  id: number;
 
   @Column()
   datahora_cricao_desafio: Date;
@@ -22,15 +22,9 @@ export class Desafio {
   datahora_desafio: Date;
 
   @Column()
-  usuario_id: Number
+  usuario_id: number
 
-  @Column()
-  id_time_desafiante: Number;
-
-  @Column()
-  id_time_desafiado: Number;
-
-  @Column()
+  @Column({type: 'enum', enum: StatusDesafio, nullable: false})
   status: StatusDesafio;
 
   @Column({nullable: true})

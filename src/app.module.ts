@@ -12,6 +12,8 @@ import { PartidasModule } from './partidas/partidas.module';
 import { DesafiosModule } from './desafios/desafios.module';
 import { TimesService } from './times/times.service';
 import { EsporteModule } from './esportes/espote.module';
+import { HistAtletaTimeModule } from './hist_atleta_time/hist_atleta_time.module';
+import { ConvitesModule } from './convites/convites.module';
 
 @Module({
   imports: [
@@ -26,7 +28,7 @@ import { EsporteModule } from './esportes/espote.module';
       synchronize: true,
       autoLoadEntities: true,
     }), 
-    UsuariosModule, TimesModule, PartidasModule, DesafiosModule, EsporteModule
+    UsuariosModule, TimesModule, PartidasModule, DesafiosModule, EsporteModule, HistAtletaTimeModule, ConvitesModule
   ],
   controllers: [AppController],
   providers: [AppService],
