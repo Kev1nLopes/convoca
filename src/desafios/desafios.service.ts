@@ -189,9 +189,9 @@ export class DesafiosService {
       }      
 
     
-      for (const key of Object.keys(UpdateDesafioDto)) {
+      for (const key of Object.keys(updateDesafioDto)) {
         if(Object.keys(desafio).includes(key)){
-          desafio[key] = UpdateDesafioDto[key]
+          desafio[key] = updateDesafioDto[key]
         }
       }
 

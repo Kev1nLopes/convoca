@@ -20,6 +20,7 @@ export class PartidasService {
 
       this.partidaRepository.save(partida)
 
+      
 
     }catch(error){
       console.log(" ~ PartidasService ~ create ~ error:", error)
