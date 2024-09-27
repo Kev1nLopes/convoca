@@ -2,6 +2,7 @@ import { AtletaTime } from "src/atleta_time/entities/atleta_time.entity";
 import { Convite } from "src/convites/entities/convite.entity";
 import { Desafio } from "src/desafios/entities/desafio.entity";
 import { Esporte } from "src/esportes/entities/esporte.entity";
+import { HistoricoAtletaTime } from "src/hist_atleta_time/entities/hist_atleta_time.entity";
 import { Usuario } from "src/usuarios/entities/usuario.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -55,5 +56,8 @@ export class Time {
 
   @OneToMany(() => Desafio, (desafio) => desafio.time_desafiado)
   desafiosRecebidos: Desafio[]
+
+  @OneToMany(() => HistoricoAtletaTime, (historicoAtletaTime) => historicoAtletaTime.time)
+  historicoAtletas: HistoricoAtletaTime[]
 
 }

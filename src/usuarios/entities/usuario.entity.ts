@@ -1,5 +1,6 @@
 import { AtletaTime } from "src/atleta_time/entities/atleta_time.entity";
 import { Convite } from "src/convites/entities/convite.entity";
+import { HistoricoAtletaTime } from "src/hist_atleta_time/entities/hist_atleta_time.entity";
 import { Time } from "src/times/entities/time.entity";
 import { AfterInsert, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -51,6 +52,7 @@ export class Usuario {
   @OneToMany(() => AtletaTime, (AtletaTime) => AtletaTime.usuario)
   times: AtletaTime[];
 
-
+  @OneToMany(() => HistoricoAtletaTime, (historicoAtletaTime) => historicoAtletaTime.atleta)
+  historicoTimes: HistoricoAtletaTime[]
 
 }

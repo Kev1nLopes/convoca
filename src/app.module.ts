@@ -23,7 +23,7 @@ import { ConvitesModule } from './convites/convites.module';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: '91928830',
+      password: 'hellpis',
       database: 'convoca',
       synchronize: true,
       autoLoadEntities: true,
