@@ -20,11 +20,7 @@ import { ConvitesModule } from './convites/convites.module';
     ConfigModule.forRoot({ envFilePath: '.env'}),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'hellpis',
-      database: 'convoca',
+      url: process.env.SUPABASE_URL, // Use environment variable for the URL
       synchronize: true,
       autoLoadEntities: true,
     }), 
