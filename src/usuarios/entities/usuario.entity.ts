@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { AtletaTime } from "src/atleta_time/entities/atleta_time.entity";
 import { Convite } from "src/convites/entities/convite.entity";
 import { HistoricoAtletaTime } from "src/hist_atleta_time/entities/hist_atleta_time.entity";
@@ -5,7 +6,7 @@ import { Time } from "src/times/entities/time.entity";
 import { AfterInsert, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
-@Entity('usuario', )
+@Entity('usuario')
 export class Usuario {
 
   @PrimaryGeneratedColumn()
@@ -14,6 +15,7 @@ export class Usuario {
   @Column({nullable: false})
   nome: String;
 
+  @Exclude()
   @Column({nullable: false})
   senha: String;
 

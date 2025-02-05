@@ -6,7 +6,6 @@ export enum StatusDesafio  {
   Pendente = 'pendente', 
   Aceito ='aceito',
   Negado = 'negado',
-  Todos = 'todos'
 };
 
 @Entity()

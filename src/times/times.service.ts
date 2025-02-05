@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable,  NotFoundException,  UnauthorizedException } from '@nestjs/common';
 import { CreateTimeDto } from './dto/create-time.dto';
 import { UpdateTimeDto } from './dto/update-time.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -31,7 +31,10 @@ export class TimesService {
     try{
       let Usuario = await this.usuarioService.getById(token.id);
       let esporte = await this.esporteRepository.findOne({where : { id: createTimeDto.esporte_id}})
+      console.log("🚀 ~ TimesService ~ create ~ createTimeDto:", createTimeDto)
+      if(!esporte) return { status: 404, message: 'Nenhum esporte encontrado'}
       let time = this.timeRepository.create()
+      
       
       time.dt_fundacao = createTimeDto.dt_fundacao;
       time.nome = createTimeDto.nome
@@ -108,11 +111,9 @@ export class TimesService {
         }
       })
 
-      if(!Time) throw new NotFoundException('Nenhum time encontrado')
+      if(!Time || !Time.ativo) return { status: 404, message: 'Nenhum time encontrado'}
 
       await this.atletaTimeService.verificarPermissaoAdmin(Time.id, token.id)
-
-      if(!Time.ativo) throw new NotFoundException('Nenhum time encontrado')
 
       Time.ativo = false;
 
@@ -132,11 +133,27 @@ export class TimesService {
 
   async findTime(id: Number){
     try{
-      const Time = await this.timeRepository.findOne({
-        where: {
-          id: id
-        }
-      })
+      // const Time = await this.timeRepository.findOne({
+      //   where: {
+      //     id: id
+      //   },
+      //   relations: ['atletas', 'atletas.usuario']
+      // })
+      const Time = await this.timeRepository
+      .createQueryBuilder('time')
+      .leftJoinAndSelect('time.atletas', 'atletas')
+      .leftJoinAndSelect('atletas.usuario', 'usuario')
+      .where('time.id = :id', {id})
+      .select([
+        'time.id',
+        'time.nome',
+        'usuario.id',
+        'usuario.nome',
+        'usuario.data_nasc',
+        'atletas.cargo',
+      ]).getOne();
+
+      
     
       if(!Time) throw new NotFoundException('Nenhum time encontrado');
 

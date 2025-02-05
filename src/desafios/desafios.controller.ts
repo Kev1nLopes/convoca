@@ -11,12 +11,16 @@ import { JWTUtil } from 'utils/jwt-util';
 @ApiTags('Desafios')
 @Controller('desafios')
 export class DesafiosController {
-  constructor(private readonly desafiosService: DesafiosService) {}
+  constructor(
+    private readonly desafiosService: DesafiosService,
+    private readonly jwtUtil: JWTUtil
+
+  ) {}
 
   @Post()
   @ApiBearerAuth()
   async cadastrarDesafio(@Body() createDesafioDto: CreateDesafioDto, @Req() req, @Res() res) {
-    const token = JWTUtil.getDadosToken(req)
+    const token = this.jwtUtil.getDadosToken(req)
     const response = await this.desafiosService.cadastrarDesafio(createDesafioDto, token);
     res.status(response.status).json(response.message)
   }
@@ -43,7 +47,7 @@ export class DesafiosController {
   @Patch(':id')
   @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateDesafioDto: UpdateDesafioDto, @Req() req, @Res() res) {
-    const token = JWTUtil.getDadosToken(req)
+    const token = this.jwtUtil.getDadosToken(req)
     const response = await this.desafiosService.update(+id, updateDesafioDto, token);
     res.status(response.status).json(response.message)
   }

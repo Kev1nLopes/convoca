@@ -20,8 +20,8 @@ import { ConvitesModule } from './convites/convites.module';
     ConfigModule.forRoot({ envFilePath: '.env'}),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.SUPABASE_URL, // Use environment variable for the URL
-      synchronize: true,
+      url: process.env.XATA_URL, // Use environment variable for the URL
+      synchronize: false,
       autoLoadEntities: true,
     }), 
     UsuariosModule, TimesModule, PartidasModule, DesafiosModule, EsporteModule, HistAtletaTimeModule, ConvitesModule

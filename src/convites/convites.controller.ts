@@ -7,11 +7,15 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('convites')
 export class ConvitesController {
-  constructor(private readonly convitesService: ConvitesService) {}
+  constructor(
+    private readonly convitesService: ConvitesService,
+    private readonly jwtUtil: JWTUtil
+
+  ) {}
 
   @Post()
   async create(@Body() createConviteDto: CreateConviteDto, @Res() res, @Req() req) {
-    const token = JWTUtil.getDadosToken(req)
+    const token = this.jwtUtil.getDadosToken(req)
     const response = await this.convitesService.create(createConviteDto, token);
     res.status(response.status).json(response.message)
   }
@@ -19,7 +23,7 @@ export class ConvitesController {
   @Get()
   @ApiBearerAuth()
   findAll(@Req() req, @Res() res) {
-    const token = JWTUtil.getDadosToken(req)
+    const token = this.jwtUtil.getDadosToken(req)
     return this.convitesService.findAll(token);
   }
 

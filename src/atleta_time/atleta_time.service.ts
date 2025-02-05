@@ -146,16 +146,13 @@ export class AtletaTimeService {
 
     if(!time) throw new BadRequestException('Nenhum time encontrado');
 
-    let usuario = await this.atletaTimeRepository.findOne({
-      where: {
-        time: {
-          id: time_id
-        },
-        usuario: {
-          id: user_id
-        }
-      }
-    })
+    const usuario = await this.atletaTimeRepository
+    .createQueryBuilder('atleta')
+    .leftJoinAndSelect('atleta.usuario', 'usuario')
+    .where('usuario.id = :user_id', {user_id} )
+    .andWhere('atleta.time_id = :time_id', {time_id})
+    .getOne();
+    
     // Se o usuário não pertencer ao time ou não ter cargo Admin
     if(!usuario || usuario.cargo != 'Admin') throw new UnauthorizedException('Você não pode realizar está ação');
     

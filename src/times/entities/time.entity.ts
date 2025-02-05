@@ -36,6 +36,7 @@ export class Time {
   @Column({ default: () => "CURRENT_TIMESTAMP + INTERVAL '3 hours'", type: 'timestamp'})
   dt_criacao: Date;
 
+  
   @OneToMany(() => Convite, (convite) => convite.time)
   convites: Convite[]
 
@@ -47,6 +48,7 @@ export class Time {
   @ManyToOne(() => Esporte, (esporte) => esporte.time)
   @JoinColumn({name: "esporte_id"})
   esporte: Esporte
+
 
   @OneToMany(() => AtletaTime, (atletaTime) => atletaTime.time)
   atletas: AtletaTime[]

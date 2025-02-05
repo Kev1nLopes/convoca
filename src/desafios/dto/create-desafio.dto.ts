@@ -6,11 +6,11 @@ import { StatusDesafio } from "../entities/desafio.entity";
 export class CreateDesafioDto {
 
   @ApiProperty()
+  @IsNotEmpty()
   datahora_desafio: Date;
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsEnum(StatusDesafio)
   id_time_desafiante: Number;
 
 

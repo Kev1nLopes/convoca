@@ -8,6 +8,7 @@ import { Time } from 'src/times/entities/time.entity';
 import { Token } from 'types/Token';
 import { time } from 'console';
 import { PartidasService } from 'src/partidas/partidas.service';
+import moment from 'moment';
 
 @Injectable()
 export class DesafiosService {
@@ -23,26 +24,30 @@ export class DesafiosService {
   ) {}
   
   async cadastrarDesafio(createDesafioDto: CreateDesafioDto, token) {
+    console.log("🚀 ~ DesafiosService ~ cadastrarDesafio ~ createDesafioDto:", createDesafioDto)
     try{
       const TimeDesafiante = await this.timeRepository.findOne({
         where: {
-          id: createDesafioDto.id_time_desafiante
+          id: createDesafioDto.id_time_desafiante,
+          ativo: true,
         }
       })
 
-      if(!TimeDesafiante) throw new NotFoundException('Time Desafiante não encontrado')
+      if(!TimeDesafiante) return {status: 404, message: 'Time Desafiante não encontrado'}
 
       const TimeDesafiado = await this.timeRepository.findOne({
         where: {
-          id: createDesafioDto.id_time_desafiado
+          id: createDesafioDto.id_time_desafiado,
+          ativo: true
         }
       })
 
-      if(!TimeDesafiado) throw new BadRequestException('Time Desafiado não encontrado')
+      if(!TimeDesafiado) return { status: 404, message: 'Time Desafiado não encontrado'}
 
 
       let desafio = await this.desafioRepository.findOne({
         select: [
+          'id',
           'datahora_desafio',
           'nome_campo',
           'status',
@@ -69,9 +74,7 @@ export class DesafiosService {
       NovoDesafio.nome_campo         = createDesafioDto.nome_campo
       NovoDesafio.status             = StatusDesafio.Pendente
       NovoDesafio.usuario_id         = token.id
-
-
-
+      NovoDesafio.datahora_cricao_desafio = createDesafioDto.datahora_desafio
       this.desafioRepository.save(NovoDesafio);
 
 
@@ -87,7 +90,7 @@ export class DesafiosService {
   async buscarDesafios(id_time: number, status: string, data_inicio: Date, data_final: Date) {
     try{
       let whereStatus = {}
-      if(status !== StatusDesafio.Todos || !status){
+      if(!Object.keys(StatusDesafio).includes(status)){
         whereStatus = {
           status: status
         }
@@ -97,12 +100,12 @@ export class DesafiosService {
       let whereData = {}
       if(data_inicio && data_final){
         whereData = {
-          datahora_desafio: Between(data_inicio, data_final)
+          datahora_desafio: Between(moment(data_inicio).startOf('day'), moment(data_final).endOf('day'))
         }
       }
       if(data_inicio && !data_final){
         whereData = {
-          datahora_desafio: MoreThanOrEqual(data_inicio)
+          datahora_desafio: MoreThanOrEqual(moment(data_inicio).startOf('day'))
         }
       }
 

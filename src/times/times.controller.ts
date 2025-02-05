@@ -13,6 +13,7 @@ export class TimesController {
   constructor(
     private readonly timesService: TimesService,
     private readonly atletaTimeService: AtletaTimeService,
+    private readonly jwtUtil: JWTUtil
     ) {}
 
   
@@ -20,7 +21,7 @@ export class TimesController {
   @ApiBearerAuth()
   @ApiBody({type: CreateTimeDto})
   async create(@Body() createTimeDto: CreateTimeDto, @Res() res, @Req() req) {
-    const token = JWTUtil.getDadosToken(req);
+    const token = this.jwtUtil.getDadosToken(req);
     const response = await this.timesService.create(createTimeDto, token);
     res.status(response.status).json(response.message)
   }
@@ -31,7 +32,7 @@ export class TimesController {
     res.status(response.status).json(response.message)
   }
   
-  @Get('/todos')
+  @Get('/')
   async buscarTimes(@Res() res){
     const response = await this.timesService.buscarTimes();
     res.status(response.status).json(response.message)
@@ -67,7 +68,7 @@ export class TimesController {
   @Patch(':id')
   @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateTimeDto: UpdateTimeDto, @Res() res, @Req() req) {
-    const token = JWTUtil.getDadosToken(req)
+    const token = this.jwtUtil.getDadosToken(req);
     const response = await this.timesService.update(+id, updateTimeDto, token);
     res.status(response.status).json(response.message);
   }
@@ -75,7 +76,7 @@ export class TimesController {
   @Delete(':id')
   @ApiBearerAuth()
   async remove(@Param('id') id: string, @Res() res, @Req() req) {
-    const token = JWTUtil.getDadosToken(req)
+    const token = this.jwtUtil.getDadosToken(req);
     const response = await this.timesService.remove(+id, token);
     res.status(response.status).json(response.message)
   }

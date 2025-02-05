@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger,  NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { OmitType } from '@nestjs/mapped-types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { Repository } from 'typeorm';
@@ -12,10 +13,12 @@ import { Token } from 'types/Token';
 
 @Injectable()
 export class UsuariosService {
+  private readonly logger = new Logger(UsuariosService.name)
 
   constructor(
     @InjectRepository(Usuario)
-    private readonly usuarioRepository: Repository<Usuario>
+    private readonly usuarioRepository: Repository<Usuario>,
+    private readonly jwtUtil: JWTUtil
   ){}
   async create(createUsuarioDto: CreateUsuarioDto) {
     try{
@@ -28,6 +31,7 @@ export class UsuariosService {
 
       if(UserEmail){
         throw new BadRequestException('Este e-mail já foi vinculado a um usuário', { cause: {}, description: 'Usuário ja existe'})
+        this.logger.error('Este email ja foi vinculado a um usuario', error)
       }
 
       // Encriptar a senha
@@ -41,7 +45,7 @@ export class UsuariosService {
 
       
 
-      let token = JWTUtil.GenerateToken(novoUsuario);
+      let token = this.jwtUtil.GenerateToken(novoUsuario);
 
       return { status: 200, message: {message: 'Usuário criado com sucesso' ,data: { token: token}} }
 
@@ -74,12 +78,12 @@ export class UsuariosService {
         throw new BadRequestException('E-mail ou senha incorretos', {})          
       }
 
-
-      let token = JWTUtil.GenerateToken(Usuario)
+      let token = this.jwtUtil.GenerateToken(Usuario)
 
       return { status: 200, message: { token: token }}
 
     }catch(error){
+      console.log("🚀 ~ UsuariosService ~ login ~ error:", error)
       throw new BadRequestException('E-mail ou senha incorretos', {})
     }
   }
@@ -117,7 +121,7 @@ export class UsuariosService {
     }
   }
 
-  async getById(id: Number){
+  async getById(id: Number) {
     try{
 
       const Usuario = await this.usuarioRepository.findOne({

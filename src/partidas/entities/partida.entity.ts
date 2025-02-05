@@ -3,8 +3,6 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Partida {
-
-
   @Column()
   @PrimaryGeneratedColumn()
   id: Number;
