@@ -2,31 +2,34 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsuariosModule } from './usuarios/usuarios.module';
-import { TimesModule } from './times/times.module';
-import { Usuario } from './usuarios/entities/usuario.entity';
+import { UsuariosModule } from './resources/usuarios/usuarios.module';
+import { TimesModule } from './resources/times/times.module';
+import { Usuario } from './database/core/usuario.entity';
 import { ConfigModule } from '@nestjs/config';
-import { AtletaTime } from './atleta_time/entities/atleta_time.entity';
-import { Time } from './times/entities/time.entity';
-import { PartidasModule } from './partidas/partidas.module';
-import { DesafiosModule } from './desafios/desafios.module';
-import { TimesService } from './times/times.service';
-import { EsporteModule } from './esportes/espote.module';
-import { HistAtletaTimeModule } from './hist_atleta_time/hist_atleta_time.module';
-import { ConvitesModule } from './convites/convites.module';
+import { AtletaTime } from './database/core/atleta_time.entity';
+import { Time } from './database/core/time.entity';
+import { PartidasModule } from './resources/partidas/partidas.module';
+import { DesafiosModule } from './resources/desafios/desafios.module';
+import { TimesService } from './resources/times/times.service';
+import { EsporteModule } from './resources/esportes/espote.module';
+import { HistAtletaTimeModule } from './resources/hist_atleta_time/hist_atleta_time.module';
+import { ConvitesModule } from './resources/convites/convites.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env'}),
+    ConfigModule.forRoot({ envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.XATA_URL, // Use environment variable for the URL
       synchronize: false,
-      autoLoadEntities: true,
-    }), 
-    UsuariosModule, TimesModule, PartidasModule, DesafiosModule, EsporteModule, HistAtletaTimeModule, ConvitesModule
+      autoLoadEntities: false,
+      entities: [__dirname + '/database/core/**/*.entity{.ts,.js}'],
+      migrations: ['src/database/migrations/*-migration.ts'],
+      migrationsRun: false,
+      logging: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

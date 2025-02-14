@@ -1,4 +1,4 @@
-import { Usuario } from "src/usuarios/entities/usuario.entity";
+import { Usuario } from "src/database/core/usuario.entity";
 import * as jwt from 'jsonwebtoken';
 import { BadRequestException, HttpException, HttpStatus } from "@nestjs/common";
 import { Token } from "types/Token";
