@@ -16,18 +16,18 @@ export class PartidasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.partidasService.findOne(+id);
+    return this.partidasService.findOne(id);
   }
 
   @Patch(':id')
   @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updatePartidaDto: UpdatePartidaDto) {
-    return this.partidasService.update(+id, updatePartidaDto);
+    return this.partidasService.update(id, updatePartidaDto);
   }
 
   @Delete(':id')
   @ApiBearerAuth()
   remove(@Param('id') id: string) {
-    return this.partidasService.remove(+id);
+    return this.partidasService.remove(id);
   }
 }

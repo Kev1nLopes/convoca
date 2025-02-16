@@ -72,7 +72,7 @@ export class ConvitesService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     try{
       
       let Convite = await this.findConvite(id)
@@ -85,7 +85,7 @@ export class ConvitesService {
     }
   }
 
-  async update(id: number, updateConviteDto: UpdateConviteDto) {
+  async update(id: string, updateConviteDto: UpdateConviteDto) {
     try{
 
       const Convite = await this.findConvite(id);
@@ -110,7 +110,7 @@ export class ConvitesService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     try{
 
       const Convite = await this.findConvite(id);
@@ -128,7 +128,7 @@ export class ConvitesService {
   }
 
 
-  async findConvite(id: number){
+  async findConvite(id: string){
 
     const Convite = await this.conviteRepository.findOne({
       where: {

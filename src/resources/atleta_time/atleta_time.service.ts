@@ -73,7 +73,7 @@ export class AtletaTimeService {
     }
   }
 
-  async buscarAtletas(timeId: number) {
+  async buscarAtletas(timeId: string) {
     try{
 
       let Atletas = await this.atletaTimeRepository.find({
@@ -125,7 +125,7 @@ export class AtletaTimeService {
 
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} atletaTime`;
   }
 
@@ -135,7 +135,7 @@ export class AtletaTimeService {
    * @param user_id 
    * @returns 
    */
-  async verificarPermissaoAdmin(time_id: number, user_id: number){
+  async verificarPermissaoAdmin(time_id: string, user_id: string){
 
     
     let time = await this.timeRepository.findOne({
@@ -159,7 +159,7 @@ export class AtletaTimeService {
     return usuario;
   }
 
-  async verificarParticipacaoTime(usuario_id: number, time_id: number){
+  async verificarParticipacaoTime(usuario_id: string, time_id: string){
     let jaFazParteDoTime = await this.atletaTimeRepository.findOne({
       where: {
         time: {
@@ -177,7 +177,7 @@ export class AtletaTimeService {
   }
 
 
-  async getAtletaTimes(usuario_id: number){
+  async getAtletaTimes(usuario_id: string){
     try{
       let Atleta = await this.atletaTimeRepository.find({
         where: {

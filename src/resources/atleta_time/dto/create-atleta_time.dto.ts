@@ -5,9 +5,9 @@ export class CreateAtletaTimeDto {
 
   @ApiProperty()
   @IsNotEmpty({message: 'Informe um usuario'})
-  usuario_id: number;
+  usuario_id: string;
 
   @ApiProperty()
   @IsNotEmpty({message: 'Informe um time'})
-  time_id: number;
+  time_id: string;
 }

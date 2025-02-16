@@ -9,7 +9,7 @@ export class CreateTimeDto {
 
   @ApiProperty()
   @IsNotEmpty({message: 'Informe o esporte'})
-  esporte_id: number;
+  esporte_id: string;
 
   @ApiPropertyOptional()
   @IsOptional()

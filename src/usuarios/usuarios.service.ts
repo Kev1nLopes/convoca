@@ -121,7 +121,7 @@ export class UsuariosService {
     }
   }
 
-  async getById(id: Number) {
+  async getById(id: string) {
     try{
 
       const Usuario = await this.usuarioRepository.findOne({

@@ -19,16 +19,16 @@ export class HistAtletaTimeController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.histAtletaTimeService.findOne(+id);
+    return this.histAtletaTimeService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateHistAtletaTimeDto: UpdateHistAtletaTimeDto) {
-    return this.histAtletaTimeService.update(+id, updateHistAtletaTimeDto);
+    return this.histAtletaTimeService.update(id, updateHistAtletaTimeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.histAtletaTimeService.remove(+id);
+    return this.histAtletaTimeService.remove(id);
   }
 }

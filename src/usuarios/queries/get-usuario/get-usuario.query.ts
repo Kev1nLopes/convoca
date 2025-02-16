@@ -1,7 +1,7 @@
 
 
 export class GetUsuarioQuery { 
-    id: number;
+    id: string;
 }
 
 

@@ -12,15 +12,15 @@ export class HistAtletaTimeService {
     return `This action returns all histAtletaTime`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} histAtletaTime`;
   }
 
-  update(id: number, updateHistAtletaTimeDto: UpdateHistAtletaTimeDto) {
+  update(id: string, updateHistAtletaTimeDto: UpdateHistAtletaTimeDto) {
     return `This action updates a #${id} histAtletaTime`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} histAtletaTime`;
   }
 }

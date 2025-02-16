@@ -1,0 +1,40 @@
+###
+GET http://localhost:3000/usuario
+###
+
+POST http://localhost:3000/signUp
+Content-Type: application/json
+
+{
+    "nome": "joao",
+    "senha": "91928830",
+    "email": "kevin.lopes@acad.ufsm.br",
+    "data_nasc": "2002-01-18"
+}
+###
+
+POST http://localhost:3000/signIn
+Content-Type: application/json
+
+{
+
+    "email": "kevin.lopes@acad.ufsm.br",
+    "senha": "91928830"
+}
+
+###
+PATCH  http://localhost:3000/usuario
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUxMjBhMmNlLTg2YzAtNDFkYS1iMWFiLTVhYzYzOWM1NGZkNCIsIm5vbWUiOiJqb2FvIiwiaWF0IjoxNzM5Njc1MTEyLCJleHAiOjE3NDIyNjcxMTJ9.6oyjIWCjOK-3JoJwuQAN73pFNrC-MOi6XmckCMebrQ4
+Content-Type: application/json
+
+{
+
+    "nome": "kevinlindo"
+    
+}
+
+
+###
+DELETE http://localhost:3000/usuario
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUxMjBhMmNlLTg2YzAtNDFkYS1iMWFiLTVhYzYzOWM1NGZkNCIsIm5vbWUiOiJqb2FvIiwiaWF0IjoxNzM5Njc1MTEyLCJleHAiOjE3NDIyNjcxMTJ9.6oyjIWCjOK-3JoJwuQAN73pFNrC-MOi6XmckCMebrQ4
+

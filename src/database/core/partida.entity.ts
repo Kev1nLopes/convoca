@@ -9,7 +9,7 @@ export class Partida extends BaseEntity{
   data_criacao: Date;
 
   @Column({nullable: false})
-  id_desafio: Number;
+  id_desafio: string;
 
   @Column({nullable: true})
   placar_time_desafiado: Number;

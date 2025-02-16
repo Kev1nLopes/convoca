@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsuariosModule } from './resources/usuarios/usuarios.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 import { TimesModule } from './resources/times/times.module';
 import { Usuario } from './database/core/usuario.entity';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AtletaTime } from './database/core/atleta_time.entity';
 import { Time } from './database/core/time.entity';
 import { PartidasModule } from './resources/partidas/partidas.module';
@@ -14,22 +12,27 @@ import { TimesService } from './resources/times/times.service';
 import { EsporteModule } from './resources/esportes/espote.module';
 import { HistAtletaTimeModule } from './resources/hist_atleta_time/hist_atleta_time.module';
 import { ConvitesModule } from './resources/convites/convites.module';
+import { UsuariosController } from './usuarios/usuarios.controller';
+import { QueryBuilder } from 'typeorm';
+import { CommandBus, CqrsModule, QueryBus } from '@nestjs/cqrs';
+import { JWTUtil } from 'utils/jwt-util';
+import { QueryHandlers } from './usuarios/queries';
 
 @Module({
   imports: [
+    CqrsModule.forRoot(),
     ConfigModule.forRoot({ envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.XATA_URL, // Use environment variable for the URL
+      url: 'postgresql://e0btlr:xau_tHhJ7lD4yBJBNL232SU7BZ0Y46oSPEuU0@us-east-1.sql.xata.sh/convoca:main?sslmode=require', // Use environment variable for the URL
       synchronize: false,
-      autoLoadEntities: false,
+      autoLoadEntities: true,
       entities: [__dirname + '/database/core/**/*.entity{.ts,.js}'],
-      migrations: ['src/database/migrations/*-migration.ts'],
-      migrationsRun: false,
-      logging: true,
+      migrations: [__dirname + '/database/migrations/*-migration.ts'],
     }),
+    UsuariosModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [ ],
+  providers: [ ConfigService, JWTUtil, QueryBus, CommandBus],
 })
 export class AppModule { }

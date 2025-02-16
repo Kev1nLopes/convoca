@@ -44,7 +44,7 @@ export class PartidasService {
 
   
 
-  findOne(id: number) {
+  findOne(id: string) {
 
     try{
 
@@ -54,7 +54,7 @@ export class PartidasService {
     }
   }
 
-  update(id: number, updatePartidaDto: UpdatePartidaDto) {
+  update(id: string, updatePartidaDto: UpdatePartidaDto) {
     try{
 
     }catch(error){
@@ -63,7 +63,7 @@ export class PartidasService {
     }
   }
 
-  remove(id: number) {
+  remove(id: string) {
     try{
 
     }catch(error){

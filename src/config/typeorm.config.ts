@@ -6,14 +6,13 @@ config();
 const configService = new ConfigService();
 
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
     type: 'postgres',
-    url: process.env.XATA_URL, // Use environment variable for the URL
+    url: 'postgresql://e0btlr:xau_tHhJ7lD4yBJBNL232SU7BZ0Y46oSPEuU0@us-east-1.sql.xata.sh/convoca:main?sslmode=require', // Use environment variable for the URL
     synchronize: false,
-    entities: ['src/database/core/**/*.entity{.ts,.js}'],
-    migrations: ['src/database/migrations/*-migration.ts'],
+    entities: [__dirname + '/database/core/**/*.entity{.ts,.js}'],
+    migrations: [__dirname + '/database/migrations/*-migration.ts'],
     migrationsRun: false,
     logging: true,
 });
 
-export default AppDataSource;

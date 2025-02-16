@@ -16,11 +16,11 @@ export class GetUsuarioHandler implements IQueryHandler<GetUsuarioQuery, Usuario
     async execute(query: GetUsuarioQuery): Promise<UsuarioDto> {
         const data = await this.dataSource.manager.find(Usuario, {
             where: { id: query.id },
-            relations: ['times']
+            relations: ['times.time']
         });
 
-        if (!data.length) return null;
 
+        if (!data.length) return null;
         return plainToClass(UsuarioDto, data[0]);
     }
 }

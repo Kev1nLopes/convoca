@@ -29,19 +29,19 @@ export class ConvitesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res) {
-    const response = await this.convitesService.findOne(+id);
+    const response = await this.convitesService.findOne(id);
     res.status(response.status).json(response.message)
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateConviteDto: UpdateConviteDto, @Res() res) {
-    const response = await this.convitesService.update(+id, updateConviteDto);
+    const response = await this.convitesService.update(id, updateConviteDto);
     res.status(response.status).json(response.message)
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res) {
-    const response = await this.convitesService.remove(+id);
+    const response = await this.convitesService.remove(id);
     res.status(response.status).json(response.message)
   }
 }

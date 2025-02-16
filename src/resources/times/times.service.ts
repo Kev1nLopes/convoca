@@ -68,7 +68,7 @@ export class TimesService {
   }
 
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     try{
       let Time = await this.findTime(id);
 
@@ -85,7 +85,7 @@ export class TimesService {
     }
   }
 
-  async update(id: number, updateTimeDto: UpdateTimeDto, token: Token) {
+  async update(id: string, updateTimeDto: UpdateTimeDto, token: Token) {
     try{
 
       let Time = await this.findTime(id);
@@ -109,7 +109,7 @@ export class TimesService {
 
     }
   }
-  async remove(id: number, token: Token) {
+  async remove(id: string, token: Token) {
     try{
       const Time = await this.timeRepository.findOne({
         where: {
@@ -137,7 +137,7 @@ export class TimesService {
 
 
   // Com atletas
-  async findTime(id: Number){
+  async findTime(id: string){
     try{
       // const Time = await this.timeRepository.findOne({
       //   where: {
@@ -149,7 +149,7 @@ export class TimesService {
       .createQueryBuilder('time')
       .leftJoinAndSelect('time.atletas', 'atletas')
       .leftJoinAndSelect('atletas.usuario', 'usuario')
-      .where('time.id = :id', {id: Number(id)})
+      .where('time.id = :id', {id: id})
       .select([
         'time.id',
         'time.nome',

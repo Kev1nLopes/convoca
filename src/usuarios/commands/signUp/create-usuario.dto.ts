@@ -1,23 +1,24 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
 
-export class CreateUsuarioDto {
+export class SignUpUsuarioDto {
 
 
   @ApiProperty()
   @IsNotEmpty({message: 'Informe um nome'})
   @MinLength(3, { message: 'Informe um nome válido'})
-  nome: String;
+  @IsString()
+  nome: string;
 
   @ApiProperty()
   @IsNotEmpty({message: 'Informe uma senha'})
   @MinLength(8, {message: 'Sua senha deve ter no minimo 8 caracteres'})
-  senha: String;
+  senha: string;
 
   @ApiProperty()
   @IsNotEmpty({message: 'Informe um e-mail'})
   @IsEmail({}, {message: 'Informe um e-mail valido'})
-  email: String;
+  email: string;
 
   @ApiProperty({example: '2002-01-18'})
   @IsNotEmpty({message: 'Informe a data de nascimento'})

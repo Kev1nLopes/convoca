@@ -144,7 +144,7 @@ export class DesafiosService {
   }
 
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     try{
       const desafio = await this.desafioRepository.findOne({
         where: {
@@ -170,7 +170,7 @@ export class DesafiosService {
     }
   }
 
-  async update(id: number, updateDesafioDto: UpdateDesafioDto, token: Token) {
+  async update(id: string, updateDesafioDto: UpdateDesafioDto, token: Token) {
     try{
 
       let desafio = await this.desafioRepository.findOne({

@@ -31,7 +31,7 @@ export class TimesController {
   
   @Get('atletas/:id')
   async buscarAtletas(@Param("id") id: string, @Res() res){
-    const response = await this.atletaTimeService.buscarAtletas(+id);
+    const response = await this.atletaTimeService.buscarAtletas(id);
     res.status(response.status).json(response.message)
   }
   
@@ -48,7 +48,7 @@ export class TimesController {
   //   description: 'Id do atleta',
   //   required: false
   // })
-  // async getAtletaTimes(@Param('id') id: Number, @Res() res, @Req() req){
+  // async getAtletaTimes(@Param('id') id: string, @Res() res, @Req() req){
   //   let paramId = id
   //   if(req.headers.Authorization){
   //     const token = JWTUtil.getDadosToken(req)
@@ -64,8 +64,8 @@ export class TimesController {
   @Get(':id')
   @ApiResponse({status: HttpStatus.CREATED, description: 'Time criado com sucesso'})
   @ApiResponse({status: HttpStatus.NOT_FOUND, description: 'Nenhum Time encontrado'})
-  async findOne(@Param('id') id: Number) {
-    return this.timesService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.timesService.findOne(id);
   }
   
   
@@ -73,7 +73,7 @@ export class TimesController {
   @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateTimeDto: UpdateTimeDto, @Res() res, @Req() req) {
     const token = this.jwtUtil.getDadosToken(req);
-    const response = await this.timesService.update(+id, updateTimeDto, token);
+    const response = await this.timesService.update(id, updateTimeDto, token);
     res.status(response.status).json(response.message);
   }
 
@@ -81,7 +81,7 @@ export class TimesController {
   @ApiBearerAuth()
   async remove(@Param('id') id: string, @Res() res, @Req() req) {
     const token = this.jwtUtil.getDadosToken(req);
-    const response = await this.timesService.remove(+id, token);
+    const response = await this.timesService.remove(id, token);
     res.status(response.status).json(response.message)
   }
 }

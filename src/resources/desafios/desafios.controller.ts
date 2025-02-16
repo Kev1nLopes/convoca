@@ -41,7 +41,7 @@ export class DesafiosController {
   @Get(':id')
   @ApiResponse({status: HttpStatus.OK, description: 'Desafio encontrado'})
   @ApiResponse({status: HttpStatus.NOT_FOUND, description: 'Nenhum desafio encontrado'})
-  async findOne(@Param('id') id: number,) {
+  async findOne(@Param('id') id: string,) {
     return this.desafiosService.findOne(id);
 
   }
@@ -50,7 +50,7 @@ export class DesafiosController {
   @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateDesafioDto: UpdateDesafioDto, @Req() req, @Res() res) {
     const token = this.jwtUtil.getDadosToken(req)
-    const response = await this.desafiosService.update(+id, updateDesafioDto, token);
+    const response = await this.desafiosService.update(id, updateDesafioDto, token);
     res.status(response.status).json(response.message)
   }
 

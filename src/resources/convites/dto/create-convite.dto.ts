@@ -4,10 +4,10 @@ import { TipoConvite } from "../../../database/core/convite.entity";
 export class CreateConviteDto {
 
   @ApiProperty({description: 'Id do Time'})
-  time_id: number;
+  time_id: string;
 
   @ApiProperty({description: 'Atleta id'})
-  usuario_id:  number;
+  usuario_id:  string;
 
   @ApiProperty({description: 'Quem emitiu o convite, atleta ou time'})
   // Quem fez o convite, se foi a equipe ou o atleta

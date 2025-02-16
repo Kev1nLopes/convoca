@@ -28,10 +28,6 @@ export class Time extends BaseEntity{
   @Column({default: true})
   ativo: Boolean
   
-  @Column({ default: () => "CURRENT_TIMESTAMP + INTERVAL '3 hours'", type: 'timestamp'})
-  dt_criacao: Date;
-
-  
   @OneToMany(() => Convite, (convite) => convite.time)
   convites: Convite[]
 

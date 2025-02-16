@@ -25,8 +25,8 @@ export class JWTUtil {
     try {
       const decoded = jwt.verify(token, process.env.PRIVATE_KEY);
       return decoded;
-    } catch (err) {
-      if (err.name === 'TokenExpiredError') {
+    } catch (err)  {
+      if (err.name as string === 'TokenExpiredError') {
         throw new BadRequestException(
           'Token expirado',
           { cause: err, description: 'Token expirado' }

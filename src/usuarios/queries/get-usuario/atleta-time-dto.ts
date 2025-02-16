@@ -6,8 +6,8 @@ import { TimeDto } from "./time-dto";
 
 @Exclude()
 export class AtletaTimeDto {
-    @Expose()
-    id: number;
+    @Exclude()
+    id: string;
     @Expose()
     cargo: string;
     @Expose()

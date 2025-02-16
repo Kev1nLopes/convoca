@@ -22,7 +22,7 @@ export class Desafio extends BaseEntity {
   datahora_desafio: Date;
 
   @Column()
-  usuario_id: number
+  usuario_id: string
 
   @Column({type: 'enum', enum: StatusDesafio, nullable: false})
   status: StatusDesafio;
