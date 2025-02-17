@@ -16,16 +16,14 @@ export class signUpHandler implements ICommandHandler<signUpCommand, string>{
     constructor(
         @InjectDataSource()
         private readonly dataSource: DataSource,
-         @InjectRepository(Usuario)
-        private readonly repository: Repository<Usuario>,
     ) {
         
     }
 
-    async execute(query: signUpCommand): Promise<string> {
+    async execute(command: signUpCommand): Promise<string> {
         let alreadyExistsWithEmail = await this.dataSource.manager.find(Usuario, {
             where: {
-                email: query.email
+                email: command.email
             }
         })
         if(alreadyExistsWithEmail) {
@@ -37,12 +35,12 @@ export class signUpHandler implements ICommandHandler<signUpCommand, string>{
 
             const saltRounds = 10;
       
-            let senhaEncriptada = await hash(query.senha, saltRounds);
-            query.senha = senhaEncriptada
-            query.data_nasc = new Date(query.data_nasc)
+            let senhaEncriptada = await hash(command.senha, saltRounds);
+            command.senha = senhaEncriptada
+            command.data_nasc = new Date(command.data_nasc)
 
             const usuario = db.create(Usuario, {
-                ...query,
+                ...command,
                 senha: senhaEncriptada
             })
 

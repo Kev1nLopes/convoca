@@ -2,7 +2,7 @@ import { BadRequestException, HttpException, HttpStatus, Injectable,  NotFoundEx
 import { CreateTimeDto } from './dto/create-time.dto';
 import { UpdateTimeDto } from './dto/update-time.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Time } from '../../database/core/time.entity';
+import { Time } from '../database/core/time.entity';
 import { Repository } from 'typeorm';
 import { Token } from 'types/Token';
 import { Usuario } from 'src/database/core/usuario.entity';
@@ -39,7 +39,7 @@ export class TimesService {
       time.nome = createTimeDto.nome
       time.sigla = createTimeDto.sigla
       // time.Usuario = Usuario;
-      time.esporte = esporte;
+      // time.esporte = esporte;
 
       let novoTime = await this.timeRepository.save(time);
 

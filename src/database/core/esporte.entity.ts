@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from
 import { BaseEntity } from "./base.entity";
 
 
-@Entity()
+@Entity({ schema: 'public' }) 
 export class Esporte extends BaseEntity {
 
 
@@ -13,8 +13,8 @@ export class Esporte extends BaseEntity {
   @Column()
   limite_atletas_inicial: Number;
 
-  @OneToMany(() => Time, (time) => time.esporte)
-  time: Time
+  // @OneToMany(() => Time, (time) => time.esporte)
+  // time: Time
 
 
 }

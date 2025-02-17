@@ -13,7 +13,7 @@ export class Time extends BaseEntity{
   @Column({nullable: false})
   nome: string;
 
-  @Column({nullable: false})
+  @Column({nullable: false, unique: true})
   sigla: string;
 
   @Column({nullable: true})
@@ -32,14 +32,9 @@ export class Time extends BaseEntity{
   convites: Convite[]
 
   //Referencia ao usuario que fundou o time, quando haver cargos esse fundador vai receber o cardo dono/admin
-  @ManyToOne(() => Usuario, (usuario) => usuario.timeDono)
+  @ManyToOne(() => Usuario, (usuario) => usuario.timeDono, {nullable: false})
   @JoinColumn({name: "fundador_id"})
-  Usuario: Usuario
-
-  @ManyToOne(() => Esporte, (esporte) => esporte.time)
-  @JoinColumn({name: "esporte_id"})
-  esporte: Esporte
-
+  fundador: Usuario
 
   @OneToMany(() => AtletaTime, (atletaTime) => atletaTime.time)
   atletas: AtletaTime[]

@@ -14,7 +14,5 @@ import {
   
     @UpdateDateColumn({ type: 'timestamptz' })
     readonly updatedAt!: Date;
-  
-    @DeleteDateColumn({ type: 'timestamptz' })
-    deletedAt!: Date;
+
   }

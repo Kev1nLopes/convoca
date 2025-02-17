@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AtletaTime } from '../../database/core/atleta_time.entity';
 import { Token } from 'types/Token';
-import { TimesService } from 'src/resources/times/times.service';
+import { TimesService } from 'src/times/times.service';
 //import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { Time } from 'src/database/core/time.entity';
 import { Usuario } from 'src/database/core/usuario.entity';

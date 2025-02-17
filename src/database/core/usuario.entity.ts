@@ -46,7 +46,7 @@ export class Usuario extends BaseEntity {
   convites?: Convite[];
   
   /// Usuario pode ser dono de um time ou não ser
-  @OneToMany(() => Time, (time) => time.Usuario, {nullable: true})
+  @OneToMany(() => Time, (time) => time.fundador, {nullable: true})
   timeDono?: Time;
 
   // Usuário pode ser atleta de diversos times

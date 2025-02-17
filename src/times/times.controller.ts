@@ -6,39 +6,43 @@ import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiResponse, 
 import { JWTUtil } from 'utils/jwt-util';
 import { AtletaTimeService } from 'src/resources/atleta_time/atleta_time.service';
 import { CreateAtletaTimeDto } from 'src/resources/atleta_time/dto/create-atleta_time.dto';
+import { plainToClass } from 'class-transformer';
+import { createTimeCommand } from './commands/create-time/create-time.command';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { GetTimeQuery } from './queries/get-time/get-time.query';
+import { GetTimesQuery } from './queries/get-times/get-times.query';
 
 @Controller('time')
 @ApiTags('Time')
 export class TimesController {
   constructor(
-    private readonly timesService: TimesService,
-    private readonly atletaTimeService: AtletaTimeService,
-    private readonly jwtUtil: JWTUtil
-    ) {}
+    private readonly jwtUtil: JWTUtil,
+    private readonly queryBus: QueryBus, // Receba consultas e passa para o handler
+    private readonly commandBus: CommandBus,
+  ) { }
 
-  
+
   @Post()
   @ApiBearerAuth()
-  @ApiBody({type: CreateTimeDto})
-  @ApiResponse({status: HttpStatus.CREATED, description: 'Time criado com sucesso'})
-  @ApiResponse({status: HttpStatus.NOT_FOUND, description: 'Nenhum esporte encontrado'})
-  async create(@Body() createTimeDto: CreateTimeDto, @Req() req) {
+  @ApiBody({ type: CreateTimeDto })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'Time criado com sucesso' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Nenhum esporte encontrado' })
+  create(@Body() createTimeDto: CreateTimeDto, @Req() req) {
     console.log("🚀 ~ TimesController ~ create ~ createTimeDto:", createTimeDto)
     const token = this.jwtUtil.getDadosToken(req);
-    return this.timesService.create(createTimeDto, token);
-    
+    const command = plainToClass(createTimeCommand, { ...createTimeDto, fundador_id: token.id })
+    return this.commandBus.execute(command)
+
+    // return this.timesService.create(createTimeDto, token);
+
   }
-  
-  @Get('atletas/:id')
-  async buscarAtletas(@Param("id") id: string, @Res() res){
-    const response = await this.atletaTimeService.buscarAtletas(id);
-    res.status(response.status).json(response.message)
-  }
-  
+
+
   @Get('/')
-  async buscarTimes(@Res() res){
-    const response = await this.timesService.buscarTimes();
-    res.status(response.status).json(response.message)
+  async buscarTimes() {
+    let query = plainToClass(GetTimesQuery, {})
+    console.log("🚀 ~ TimesController ~ buscarTimes ~ query:", query)
+    return this.queryBus.execute(query)
   }
 
   // @Get(':id?')
@@ -62,26 +66,27 @@ export class TimesController {
   // }
 
   @Get(':id')
-  @ApiResponse({status: HttpStatus.CREATED, description: 'Time criado com sucesso'})
-  @ApiResponse({status: HttpStatus.NOT_FOUND, description: 'Nenhum Time encontrado'})
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'Time criado com sucesso' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Nenhum Time encontrado' })
   async findOne(@Param('id') id: string) {
-    return this.timesService.findOne(id);
+    let query = plainToClass(GetTimeQuery, {id: id})
+    return this.queryBus.execute(query)
   }
-  
-  
+
+
   @Patch(':id')
   @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateTimeDto: UpdateTimeDto, @Res() res, @Req() req) {
     const token = this.jwtUtil.getDadosToken(req);
-    const response = await this.timesService.update(id, updateTimeDto, token);
-    res.status(response.status).json(response.message);
+    // const response = await this.timesService.update(id, updateTimeDto, token);
+    // res.status(response.status).json(response.message);
   }
 
   @Delete(':id')
   @ApiBearerAuth()
   async remove(@Param('id') id: string, @Res() res, @Req() req) {
     const token = this.jwtUtil.getDadosToken(req);
-    const response = await this.timesService.remove(id, token);
-    res.status(response.status).json(response.message)
+    // const response = await this.timesService.remove(id, token);
+    // res.status(response.status).json(response.message)
   }
 }
