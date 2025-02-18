@@ -1,13 +1,9 @@
-import { AtletaTime } from "src/database/core/atleta_time.entity";
-import { Convite } from "src/database/core/convite.entity";
-import { Desafio } from "src/database/core/desafio.entity";
-import { Esporte } from "src/database/core/esporte.entity";
-import { HistoricoAtletaTime } from "src/database/core/hist_atleta_time.entity";
+
 import { Usuario } from "src/database/core/usuario.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base.entity";
 
-@Entity()
+@Entity('time')
 export class Time extends BaseEntity{
 
   @Column({nullable: false})
@@ -28,24 +24,24 @@ export class Time extends BaseEntity{
   @Column({default: true})
   ativo: Boolean
   
-  @OneToMany(() => Convite, (convite) => convite.time)
-  convites: Convite[]
+  // @OneToMany(() => Convite, (convite) => convite.time)
+  // convites: Convite[]
 
   //Referencia ao usuario que fundou o time, quando haver cargos esse fundador vai receber o cardo dono/admin
   @ManyToOne(() => Usuario, (usuario) => usuario.timeDono, {nullable: false})
   @JoinColumn({name: "fundador_id"})
   fundador: Usuario
 
-  @OneToMany(() => AtletaTime, (atletaTime) => atletaTime.time)
-  atletas: AtletaTime[]
+  // @OneToMany(() => AtletaTime, (atletaTime) => atletaTime.time)
+  // atletas: AtletaTime[]
 
-  @OneToMany(() => Desafio, (desafio) => desafio.time_desafiante)
-  desafiosFeitos: Desafio[]
+  // @OneToMany(() => Desafio, (desafio) => desafio.time_desafiante)
+  // desafiosFeitos: Desafio[]
 
-  @OneToMany(() => Desafio, (desafio) => desafio.time_desafiado)
-  desafiosRecebidos: Desafio[]
+  // @OneToMany(() => Desafio, (desafio) => desafio.time_desafiado)
+  // desafiosRecebidos: Desafio[]
 
-  @OneToMany(() => HistoricoAtletaTime, (historicoAtletaTime) => historicoAtletaTime.time)
-  historicoAtletas: HistoricoAtletaTime[]
+  // @OneToMany(() => HistoricoAtletaTime, (historicoAtletaTime) => historicoAtletaTime.time)
+  // historicoAtletas: HistoricoAtletaTime[]
 
 }

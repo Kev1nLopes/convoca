@@ -9,10 +9,7 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
   
-    @CreateDateColumn({ type: 'timestamptz' })
+    @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
     readonly createdAt!: Date;
-  
-    @UpdateDateColumn({ type: 'timestamptz' })
-    readonly updatedAt!: Date;
 
   }

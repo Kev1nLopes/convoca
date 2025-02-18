@@ -17,14 +17,12 @@ export class GetTimeHandler implements IQueryHandler<GetTimeQuery, GetTimeDto>{
   }
   
   async execute(query: GetTimeQuery): Promise<GetTimeDto> {
-    let time = await this.dataSource.manager.findOne(Time, {
-      where: {
-        id: query.id,
-        
-      },
-      relations: ['atletas', 'atletas.usuario']
-    })
-    console.log("🚀 ~ GetTimeHandler ~ execute ~ time:", time)
+    let time = await this.dataSource.getRepository(Time)
+      .createQueryBuilder('time')
+      .leftJoinAndSelect('time.fundador', 'fundador')
+      .where('time.id = :id', {id: query.id})
+      .from(`${query.schema}.time`, 'time')
+      .getOne()
 
     return plainToClass(GetTimeDto, time)
   }

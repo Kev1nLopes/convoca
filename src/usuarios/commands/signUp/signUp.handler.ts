@@ -21,7 +21,7 @@ export class signUpHandler implements ICommandHandler<signUpCommand, string>{
     }
 
     async execute(command: signUpCommand): Promise<string> {
-        let alreadyExistsWithEmail = await this.dataSource.manager.find(Usuario, {
+        let alreadyExistsWithEmail = await this.dataSource.manager.findOne(Usuario, {
             where: {
                 email: command.email
             }

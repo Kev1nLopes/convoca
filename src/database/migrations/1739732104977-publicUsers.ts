@@ -10,18 +10,16 @@ export class PublicUsers1739732104977 implements MigrationInterface {
             senha VARCHAR(255) NOT NULL,
             email VARCHAR(100) NOT NULL,
             data_nasc DATE NOT NULL,
-            cpf VARCHAR(11) UNIQUE NOT NULL,
+            cpf VARCHAR(11) UNIQUE,
             cep VARCHAR(8),
             uf varchar(2),
             cidade varchar(50),
             bairro varchar(50),
             ativo BOOLEAN DEFAULT FALSE,
-            createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-            updatedAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
             )`)
             
         let schemas = process.env.ESPORTES?.split(',') || []
-        console.log("🚀 ~ PublicUsers1739732104977 ~ up ~ schemas:", schemas)
         
         for (const schema of schemas) {
             await queryRunner.query(`CREATE SCHEMA IF NOT EXISTS ${schema}`);
@@ -35,6 +33,7 @@ export class PublicUsers1739732104977 implements MigrationInterface {
                 dt_fundacao DATE NOT NULL,
                 ativo BOOLEAN DEFAULT TRUE,
                 fundador_id UUID,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 CONSTRAINT fk_fundador
                     FOREIGN KEY(fundador_id)
                     REFERENCES usuario(id)

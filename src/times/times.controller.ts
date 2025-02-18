@@ -4,8 +4,6 @@ import { CreateTimeDto } from './dto/create-time.dto';
 import { UpdateTimeDto } from './dto/update-time.dto';
 import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JWTUtil } from 'utils/jwt-util';
-import { AtletaTimeService } from 'src/resources/atleta_time/atleta_time.service';
-import { CreateAtletaTimeDto } from 'src/resources/atleta_time/dto/create-atleta_time.dto';
 import { plainToClass } from 'class-transformer';
 import { createTimeCommand } from './commands/create-time/create-time.command';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
