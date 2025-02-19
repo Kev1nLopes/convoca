@@ -32,6 +32,7 @@ export class UsuarioDto {
     bairro?: string;
 
 
+
     @Expose()
     @Type(() => AtletaTimeDto)
     times: AtletaTimeDto[];

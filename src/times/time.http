@@ -1,10 +1,10 @@
 ### Buscar time
 POST http://localhost:3000/time
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUxMjBhMmNlLTg2YzAtNDFkYS1iMWFiLTVhYzYzOWM1NGZkNCIsIm5vbWUiOiJrZXZpbmxpbmRvIiwiaWF0IjoxNzM5NzExNTA1LCJleHAiOjE3NDIzMDM1MDV9.LVbkcBdGR1aeK_qT-LtRfe0HB5QnYALRQjVKUewl-A4
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI3Yjc1ZWNiLTQ3YjEtNDc4Ni1hOGE5LWYwOGUyODY2NzViOCIsIm5vbWUiOiJqb2FvIiwiaWF0IjoxNzM5OTIyNTY2LCJleHAiOjE3NDI1MTQ1NjZ9.EXAOgYo7017ayDhE1_DgkWCATrUrFg3-1hCsoVCnMgk
 Content-Type: application/json
 
 {
-    "nome": "socanela23",
+    "nome": "socanela24",
     "esporte_id": "f139bed9-44e9-4585-af47-2573627f760a",
     "sigla": "scl23",
     "logotipo_url": "teste",

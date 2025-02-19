@@ -14,6 +14,7 @@ import { signInCommand } from './commands/signIn/signIn.command';
 import { UpdateUsuarioDto } from './commands/update-user/update-user.dto';
 import { UpdateUserCommand } from './commands/update-user/update-user.command';
 import { removeUserCommand } from './commands/remove-user/remove-user.command';
+import { Usuario } from 'src/database/core/usuario.entity';
 @Controller()
 export class UsuariosController {
   constructor(
@@ -30,7 +31,8 @@ export class UsuariosController {
     const command = plainToClass(signUpCommand, createUsuarioDto);
     const id = await this.commandBus.execute(command);
     const query = plainToClass(GetUsuarioQuery, {id });
-    return this.queryBus.execute(query);
+    const usuario = await this.queryBus.execute(query);
+    return { token: this.jwtUtil.GenerateToken(plainToClass(Usuario, usuario)), ...usuario}
 
   }
 
