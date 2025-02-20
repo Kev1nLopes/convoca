@@ -16,6 +16,7 @@ export class GetUsuarioHandler implements IQueryHandler<GetUsuarioQuery, Usuario
     async execute(query: GetUsuarioQuery): Promise<UsuarioDto> {
         const data = await this.dataSource.manager.find(Usuario, {
             where: { id: query.id },
+
         });
 
 
