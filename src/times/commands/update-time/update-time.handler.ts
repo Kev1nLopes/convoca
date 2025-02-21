@@ -19,17 +19,29 @@ export class UpdateTimeHandler implements ICommandHandler<UpdateTimeCommand, str
 
     return this.dataSource.transaction(async (db) => {
 
-      let time = await db.findOne(Time, {
-        where: {
-          id: command.id,
-          ativo: true
-        }
-      })
+      // let time = await db.findOne(Time, {
+      //   where: {
+      //     id: command.id,
+      //     ativo: true
+      //   }
+      // })
+
+      let time = await db.createQueryBuilder()
+      .select()
+      .from(`${command.esporte}.time`, 'time')
+      .where('time.id = :id', {id: command.id})
+      .getOne()
 
       if(!time) throw new NotFoundException('Nenhum time encontrado')
 
-      db.merge(Time, time, command)
-      await db.save(time)
+
+      db.createQueryBuilder()
+      .update(`${command.esporte}.time`)
+      .set(command)
+      .where(`id = :id`, {id: command.id})
+      .execute()
+
+
       return 'Time atualizado com sucesso!'
     })
   }

@@ -2,6 +2,7 @@
 import { Usuario } from "src/database/core/usuario.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base.entity";
+import { AtletaTime } from "./atleta_time.entity";
 
 @Entity('time')
 export class Time extends BaseEntity{
@@ -32,8 +33,8 @@ export class Time extends BaseEntity{
   @JoinColumn({name: "fundador_id"})
   fundador: Usuario
 
-  // @OneToMany(() => AtletaTime, (atletaTime) => atletaTime.time)
-  // atletas: AtletaTime[]
+  @OneToMany(() => AtletaTime, (atletaTime) => atletaTime.time)
+  atletas: AtletaTime[]
 
   // @OneToMany(() => Desafio, (desafio) => desafio.time_desafiante)
   // desafiosFeitos: Desafio[]

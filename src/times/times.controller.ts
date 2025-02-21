@@ -9,6 +9,7 @@ import { createTimeCommand } from './commands/create-time/create-time.command';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetTimeQuery } from './queries/get-time/get-time.query';
 import { GetTimesQuery } from './queries/get-times/get-times.query';
+import { RemoveTimeCommand } from './commands/remove-time/remove-time.command';
 
 @Controller('time')
 @ApiTags('Time')
@@ -84,6 +85,8 @@ export class TimesController {
   @ApiBearerAuth()
   async remove(@Param('id') id: string, @Res() res, @Req() req) {
     const token = this.jwtUtil.getDadosToken(req);
+    let command = plainToClass(RemoveTimeCommand, {id: id})
+    this.commandBus.execute(command)
     // const response = await this.timesService.remove(id, token);
     // res.status(response.status).json(response.message)
   }

@@ -3,6 +3,7 @@ import { Exclude } from "class-transformer";
 import { Time } from "src/database/core/time.entity";
 import { AfterInsert, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base.entity";
+import { AtletaTime } from "./atleta_time.entity";
 
 
 @Entity('usuario')
@@ -47,8 +48,8 @@ export class Usuario extends BaseEntity {
   timeDono?: Time;
 
   // Usuário pode ser atleta de diversos times
-  // @OneToMany(() => AtletaTime, (AtletaTime) => AtletaTime.usuario)
-  // times?: AtletaTime[];
+   @OneToMany(() => AtletaTime, (AtletaTime) => AtletaTime.usuario)
+   times?: AtletaTime[];
 
   // @OneToMany(() => HistoricoAtletaTime, (historicoAtletaTime) => historicoAtletaTime.atleta)
   // historicoTimes?: HistoricoAtletaTime[]

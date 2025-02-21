@@ -25,7 +25,6 @@ export class CreateTimeHandler implements ICommandHandler<createTimeCommand, str
 
         if (!esporte) throw new NotFoundException('Nenhum esporte encontrado!')
 
-        console.log("🚀 ~ CreateTimeHandler ~ eecute ~ command.fundador_id:", command.fundador_id)
         let usuario = await this.dataSource.manager.findOne(Usuario, {
             where: {
                 id: command.fundador_id,
@@ -37,13 +36,12 @@ export class CreateTimeHandler implements ICommandHandler<createTimeCommand, str
 
         return this.dataSource.transaction(async (db) => {
 
-            let time = db.create(Time, {
-                ...command,
-                esporte: esporte,
-                fundador: usuario
-            })
+            let time = db.createQueryBuilder()
+                .insert()
+                .into(`${esporte}.time`)
+                .values({...command, fundador: usuario })
+                .execute();
 
-            await db.save(time)
 
             return 'Time criado com sucesso'
 

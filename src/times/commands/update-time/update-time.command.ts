@@ -8,4 +8,5 @@ export class UpdateTimeCommand{
     logotipo_url: string;
     publico: boolean;
     dt_fundacao: Date;
+    esporte: string;
 }

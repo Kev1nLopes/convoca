@@ -30,7 +30,7 @@ export class PublicAtletaTime1739925027201 implements MigrationInterface {
         const schemas = process.env.ESPORTES?.split(',') || [];
 
         for (const schema of schemas) {
-            await queryRunner.query(`DROP TABLE IF EXISTS ${schema}.time CASCADE`);
+            await queryRunner.query(`DROP TABLE IF EXISTS ${schema}.atleta_time CASCADE`);
         }
     }
 
