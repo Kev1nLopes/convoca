@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne } from "typeorm";
 import { Time } from "./time.entity";
 import { Usuario } from "./usuario.entity";
+import { BaseEntity } from "./base.entity";
 
 
 

@@ -20,4 +20,4 @@ GET http://localhost:3000/time/4e136caf-4f41-40b0-b108-4a313a042b9a
 GET http://localhost:3000/time
 
 ### Buscar times
-DELETE http://localhost:3000/time
+DELETE http://localhost:3000/time/

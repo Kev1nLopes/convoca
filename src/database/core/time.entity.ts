@@ -3,6 +3,7 @@ import { Usuario } from "src/database/core/usuario.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { AtletaTime } from "./atleta_time.entity";
+import { Convite } from "./convite.entity";
 
 @Entity('time')
 export class Time extends BaseEntity{
@@ -25,8 +26,8 @@ export class Time extends BaseEntity{
   @Column({default: true})
   ativo: Boolean
   
-  // @OneToMany(() => Convite, (convite) => convite.time)
-  // convites: Convite[]
+  @OneToMany(() => Convite, (convite) => convite.time)
+  convites: Convite[]
 
   //Referencia ao usuario que fundou o time, quando haver cargos esse fundador vai receber o cardo dono/admin
   @ManyToOne(() => Usuario, (usuario) => usuario.timeDono, {nullable: false})
