@@ -11,6 +11,8 @@ import { QueryBuilder } from 'typeorm';
 import { CommandBus, CqrsModule, QueryBus } from '@nestjs/cqrs';
 import { JWTUtil } from 'utils/jwt-util';
 import { QueryHandlers } from './usuarios/queries';
+import { Util } from 'utils/util';
+import { ConvitesModule } from './convites/convites.module';
 
 @Module({
   imports: [
@@ -28,9 +30,9 @@ import { QueryHandlers } from './usuarios/queries';
       migrations: [__dirname + '/database/migrations/{.ts,*.js}'],
       migrationsRun: true,
     }),
-    UsuariosModule, TimesModule
+    UsuariosModule, TimesModule, ConvitesModule
   ],
   controllers: [ ],
-  providers: [ ConfigService, JWTUtil, QueryBus, CommandBus],
+  providers: [ ConfigService, JWTUtil,Util, QueryBus, CommandBus],
 })
 export class AppModule { }

@@ -1,3 +1,6 @@
 
 
-export class GetTimesQuery{}
+export class GetTimesQuery{
+
+  schema: string;
+}

@@ -1,4 +1,5 @@
 
 export class removeUserCommand{
-    id: string
+    id: string;
+    schema: string;
 }

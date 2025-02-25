@@ -1,6 +1,4 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable,  NotFoundException,  UnauthorizedException } from '@nestjs/common';
-import { CreateTimeDto } from './dto/create-time.dto';
-import { UpdateTimeDto } from './dto/update-time.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Time } from '../database/core/time.entity';
 import { Repository } from 'typeorm';

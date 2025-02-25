@@ -7,42 +7,36 @@ import { NotFoundException } from "@nestjs/common";
 import { Time } from "src/database/core/time.entity";
 
 @CommandHandler(UpdateTimeCommand)
-export class UpdateTimeHandler implements ICommandHandler<UpdateTimeCommand, string>{
+export class UpdateTimeHandler implements ICommandHandler<UpdateTimeCommand, {message: string}>{
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource
   ){
 
   }
-  async execute(command: UpdateTimeCommand): Promise<string> {
+  async execute(command: UpdateTimeCommand): Promise<{message: string}> {
 
 
     return this.dataSource.transaction(async (db) => {
 
-      // let time = await db.findOne(Time, {
-      //   where: {
-      //     id: command.id,
-      //     ativo: true
-      //   }
-      // })
 
       let time = await db.createQueryBuilder()
-      .select()
-      .from(`${command.esporte}.time`, 'time')
-      .where('time.id = :id', {id: command.id})
-      .getOne()
+        .select()
+        .from(`${command.schema}.time`, 'time')
+        .where('time.id = :id', {id: command.id})
+        .getOne()
 
       if(!time) throw new NotFoundException('Nenhum time encontrado')
 
 
       db.createQueryBuilder()
-      .update(`${command.esporte}.time`)
-      .set(command)
-      .where(`id = :id`, {id: command.id})
-      .execute()
+        .update(`${command.schema}.time`)
+        .set({...command})
+        .where(`id = :id`, {id: command.id})
+        .execute()
 
 
-      return 'Time atualizado com sucesso!'
+      return { message: 'Time atualizado com sucesso!'}
     })
   }
 

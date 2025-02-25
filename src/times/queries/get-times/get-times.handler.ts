@@ -5,6 +5,7 @@ import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { Time } from "src/database/core/time.entity";
 import { plainToClass, plainToInstance } from "class-transformer";
+import { query } from "express";
 
 
 @QueryHandler(GetTimesQuery)
@@ -16,12 +17,13 @@ export class GetTimesHandler implements IQueryHandler<GetTimesQuery, GetTimeDto[
 
   }
   
-  async execute(): Promise<GetTimeDto[]> {
-    let times = await this.dataSource.manager.find(Time, {
-      where: {
-        ativo: true
-      }
-    })
+  async execute(query: GetTimesQuery): Promise<GetTimeDto[]> {
+    let times = await this.dataSource.createQueryBuilder()
+      .select()
+      .from(`${query.schema}.time`, 'time')
+      .where('time.ativo = :ativo', {ativo: true})
+      .getMany()
+
 
     return plainToInstance(GetTimeDto, times, { excludeExtraneousValues: true })
   }

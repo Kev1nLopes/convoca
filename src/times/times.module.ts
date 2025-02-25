@@ -11,10 +11,11 @@ import { JWTUtil } from 'utils/jwt-util';
 import { Time } from 'src/database/core/time.entity';
 import { timeCommandHandlers } from './commands';
 import { timeQueryHandlers } from './queries';
+import { Util } from 'utils/util';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Time, Usuario, Esporte])],
   controllers: [TimesController],
-  providers: [JWTUtil, ...timeCommandHandlers, ...timeQueryHandlers ],
+  providers: [JWTUtil, Util, ...timeCommandHandlers, ...timeQueryHandlers ],
 })
 export class TimesModule {}
