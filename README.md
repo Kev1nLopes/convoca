@@ -1,6 +1,17 @@
 <h3> Bem vindo ao <b>CONVOCA</b></h3>
 
 
+#Funcionalidades Essenciais MVP
+- Autenticação (Login<V>, Cadastro<V>, Alterar senha<>, recuperar senha<>, Login GOOGLE<>)
+- Selecionar esportes
+- Criar time
+- Agendar horário
+- Historico de Partidas
+- Desafios
+- Convites
+
+
+
 # Tarefas feitas - Marcar com @ no final todass que estiverem testadas e aprovadas
 > Autenticação 
 > Editar Perfil
