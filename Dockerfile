@@ -1,0 +1,4 @@
+
+
+
+CMD ['npm', 'install']
