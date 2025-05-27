@@ -1,13 +1,12 @@
 import { StatusConvite } from "src/database/core/convite.entity";
-import { Time } from "src/database/core/time.entity";
-import { Usuario } from "src/database/core/usuario.entity";
 
 
 
 export class CreateConviteCommand{
   
-  usuario: Usuario;
-  time: Time;
+  creator_id: string; // id do usuário que enviou o convite
+  usuario_id: string; 
+  time_id: string;
   mensagem: string;
   schema: string;
 }

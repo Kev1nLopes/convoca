@@ -20,9 +20,9 @@ export class Convite extends BaseEntity{
   @JoinColumn({name: "time_id"})
   time: Time
 
-  // @ManyToOne(() => Usuario, (usuario) => usuario.convites)
-  // @JoinColumn({name: "usuario_id"})
-  // usuario:  Usuario
+  @ManyToOne(() => Usuario, (usuario) => usuario.convites)
+  @JoinColumn({name: "usuario_id"})
+  usuario:  Usuario
 
   // Quem fez o convite, se foi a equipe ou o atleta
 

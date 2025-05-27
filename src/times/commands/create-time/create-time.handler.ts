@@ -22,29 +22,40 @@ export class CreateTimeHandler implements ICommandHandler<createTimeCommand, { m
                 id: command.esporte_id
             }
         })
+        console.log("🚀 ~ CreateTimeHandler ~ execute ~ esporte:", esporte)
 
+        // const esporte = await this.dataSource.manager
         if (!esporte) throw new NotFoundException('Nenhum esporte encontrado!')
-
+        console.log("🚀 ~ CreateTimeHandler ~ execute ~ command.fundador_id:", command.fundador_id)
+            
         let usuario = await this.dataSource.manager.findOne(Usuario, {
             where: {
                 id: command.fundador_id,
-                ativo: true
             }
         })
         if (!usuario) throw new NotFoundException('Nenhum usuário encontrado, entre em contato com o suporte!')
+        if (!usuario.ativo) throw new NotFoundException('Usuário inativo, entre em contato com o suporte!')
+        delete command.esporte_id
 
+        let time = await this.dataSource.getRepository(Time).createQueryBuilder()
+        .select()
+        .from(`${esporte.nome}.time`, 'time')
+        .where('time.sigla = :sigla', {sigla: command.sigla})
+        .getOne()
+
+        if(time) throw new NotFoundException('Ja existe um time com essa sigla!')
 
         return this.dataSource.transaction(async (db) => {
 
             let time = await db.createQueryBuilder()
                 .insert()
-                .into(`${esporte}.time`)
-                .values({...command, fundador: usuario })
+                .into(`${esporte.nome}.time`)
+                .values({...command, fundador_id: usuario.id })
                 .execute();
             
             let timeId = time.identifiers[0]?.id;
 
-            return { message: 'Time criado com sucesso', uri: `${process.env.SERVER}/time/${timeId}`}
+            return { message: 'Time criado com sucesso', uri: `${process.env.server}/time/${timeId}`}
 
         })
     }

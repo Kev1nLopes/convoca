@@ -31,6 +31,7 @@ export class TimesController {
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Nenhum esporte encontrado' })
   create(@Body() createTimeDto: CreateTimeDto, @Req() req) {
     const token = this.jwtUtil.getDadosToken(req);
+    console.log("🚀 ~ TimesController ~ create ~ token:", token)
     const command = plainToClass(createTimeCommand, { ...createTimeDto, fundador_id: token.id })
     return this.commandBus.execute(command)
 

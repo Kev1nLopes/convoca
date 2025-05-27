@@ -4,9 +4,10 @@ import { Time } from "src/database/core/time.entity";
 import { AfterInsert, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { AtletaTime } from "./atleta_time.entity";
+import { Convite } from "./convite.entity";
 
 
-@Entity('usuario')
+@Entity({name: 'usuario', schema: 'public'})
 export class Usuario extends BaseEntity {
 
   @Column({nullable: false})
@@ -40,8 +41,8 @@ export class Usuario extends BaseEntity {
   @Column({default: true, type: 'boolean'})
   ativo: boolean;
 
-  // @OneToMany(() => Convite, (convite) => convite.usuario)
-  // convites?: Convite[];
+  @OneToMany(() => Convite, (convite) => convite.usuario)
+  convites?: Convite[];
   
   //Usuario pode ser dono de um time ou não ser
   @OneToMany(() => Time, (time) => time.fundador, {nullable: true})
