@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: convoca_db
+    image: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+    ports:
+      - 5433:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  web:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - 3000:3000 
+volumes:
+  db_data: 
+
+  

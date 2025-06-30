@@ -1,0 +1,186 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  previewFeatures = ["multiSchema"]
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public","futebol", "volei"]
+}
+
+
+// --------- PUBLIC SCHEMA ----------
+
+model User {
+  id  String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  birthdate DateTime
+  token String
+  sports UserSport[] // Sports that users usted play - Esportes que os usuarios costumar jogar
+  bookings Booking[] // bookings of users - Agendamentos dos usuarios
+  courts SportCenter[] // Owner of sportCenter - Dono de centro de esportes
+
+ voleiPlayers VoleiPlayer[] @relation(name: "UserToVoleiPlayer")
+ futebolPlayers FutebolPlayer[] @relation(name: "UserToFutebolPlayer")
+
+  @@map("user")
+  @@schema("public")
+  
+}
+
+
+model Sport {
+  id      String @id @default(uuid())
+  name    String @unique
+  users   UserSport[] // users that play this sport
+  courts  CourtSport[] // courts that can booking this sport
+
+  @@map("sport")
+  @@schema("public")
+
+}
+
+model UserSport {
+  userId  String
+  sportId String
+  user    User @relation(fields: [userId], references: [id])
+  sport   Sport @relation(fields: [sportId], references: [id])
+  @@id([userId, sportId]) //chave primaria composta, nao deve existir outra linha com a mesma combinacao de chaves!
+
+  @@map("user_sport")
+  @@schema("public")
+
+}
+
+model SportCenter{
+  id  String @id @default(uuid())
+  name String
+  address String
+  location String
+  contact String
+  email String
+  description String
+  open_hour DateTime @db.Time()
+  end_hour DateTime @db.Time()
+  logo_url String
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id])
+  courts Court[]
+  @@map("sport_center")
+  @@schema("public")
+ // TODO verificar se o sportCenter aceita horarios quebrados, por exemplo 9:30 ate 11:00 ou ate 10:30
+  
+}
+
+
+model Court{
+  id          String @id @default(uuid())
+  name        String
+  price       Int
+  active      Boolean
+  sportCenterId String
+  sportCenter SportCenter @relation(fields: [sportCenterId], references: [id])
+  bookings    Booking[] // Lista de agendamentos que a quadra possui - list of booking that court has 
+  courtSports CourtSport[]
+
+  @@map("court")
+  @@schema("public")
+  
+}
+
+model CourtSport{
+  courtId String
+  sportId String
+  court Court @relation(fields: [courtId], references: [id])
+  sport Sport @relation(fields: [sportId], references: [id])
+  @@id([courtId, sportId]) //chave primaria composta, nao deve existir outra linha com a mesma combinacao de chaves!
+
+  @@map("court_sport")
+  @@schema("public")
+
+}
+
+model Booking {
+  id        String @id @default(uuid())
+  userId    String?
+  courtId   String
+  date      DateTime @db.Date()
+  startTime DateTime @db.Time()
+  endTime   DateTime @db.Time()
+  status    String
+  user      User?  @relation(fields: [userId], references: [id])
+  court     Court @relation(fields: [courtId], references: [id])
+
+  @@map("booking")
+  @@schema("public")
+  @@unique([courtId, date, startTime])
+
+}
+
+
+
+
+// --------- FUTEBOL SCHEMA --------
+
+
+model FutebolTeam {
+  id String @id @default(uuid())
+  name String
+  players FutebolPlayer[]
+
+  @@map("team")
+  @@schema("futebol")
+
+}
+
+
+model FutebolPlayer{
+  id String @id @default(uuid())
+  name String
+  teamId String
+  userId String
+  team FutebolTeam @relation(fields: [teamId], references: [id])
+  user User @relation(name: "UserToFutebolPlayer", fields: [userId], references: [id])
+
+  @@map("player")
+  @@schema("futebol")
+
+}
+
+
+
+
+// ----- SCHEMA VOLEI ------
+
+
+model VoleiTeam {
+  id String @id @default(uuid())
+  name String
+  players VoleiPlayer[]
+
+  @@map("team")
+  @@schema("volei")
+}
+
+
+model VoleiPlayer{
+  id String @id @default(uuid())
+  name String
+  teamId String
+  userId String
+  team VoleiTeam @relation(fields: [teamId], references: [id])
+  user User @relation(name: "UserToVoleiPlayer", fields: [userId], references: [id])
+  @@map("player")
+  @@schema("volei")
+}
